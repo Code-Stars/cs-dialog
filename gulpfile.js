@@ -7,7 +7,10 @@ var config = {
 
 var gulp = require('gulp'),
     liveReload = require('gulp-livereload'),
-    compass = require('gulp-compass');
+    compass = require('gulp-compass'),
+    uglify = require('gulp-uglify'),
+    rename = require('gulp-rename'),
+    pump = require('pump');
 
 gulp.task('watch', function () {
 
@@ -40,4 +43,18 @@ gulp.task('compass', function () {
         }));
 });
 
+gulp.task('compress', function (cb) {
+    // here we are going to build
+    // the project for production
+    pump([
+            gulp.src('src/*.js'),
+            uglify(),
+            rename({suffix: '.min'}),
+            gulp.dest('dist/js')
+        ],
+        cb
+    );
+});
+
 gulp.task('default', ['compass', 'watch']);
+gulp.task('build', ['compress']);
