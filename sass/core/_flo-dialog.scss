@@ -1,0 +1,50 @@
+.flo-dialog {
+
+  @include gutters();
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 10;
+  width: 100%;
+  height: auto;
+
+  @include breakpoint($gt-medium) {
+    padding-left: 0;
+    padding-right: 0;
+    width: 50%;
+  }
+
+  &__header {
+
+    height: rhythm(2);
+    line-height: rhythm(2);
+    background-color: #fff;
+
+    .title {
+      line-height: rhythm(2);
+    }
+  }
+
+  &__body {
+
+    position: relative;
+    background-color: #fff;
+    line-height: normal;
+  }
+
+  &__footer {
+
+    text-align: center;
+    background-color: #fff;
+    height: rhythm(2);
+    line-height: rhythm(2);
+    font-size: 12px;
+
+  }
+
+  &.hide {
+    display: none;
+  }
+}

@@ -1,0 +1,15 @@
+//  ==========================================================================
+//  Breakpoint settings
+//  ==========================================================================
+
+$lt-small: "(max-width: #{480px})";
+$gt-small: "(min-width: #{481px})";
+$lt-medium: "(max-width: #{800px})";
+$gt-medium: "(min-width: #{801px})";
+$lt-large: "(max-width: #{1024px})";
+$gt-large: "(min-width: #{1025px})";
+$lt-huge: "(min-width: #{1279px})";
+$gt-huge: "(max-width: #{1280px})";
+
+$portrait: "(orientation portrait)";
+$landscape: "(orientation landscape)";

@@ -1,0 +1,133 @@
+// padding
+.gutters {
+  @include gutters(1/4);
+}
+
+.gutters--double {
+  @include gutters(1/2);
+}
+
+.gutters--half {
+  @include gutters(1/4);
+}
+
+.gutters--fourth {
+  @include gutters(1/8);
+}
+
+.gutter-left {
+  padding-left: rhythm(1/4);
+}
+
+.gutter-left--half {
+  padding-left: rhythm(1/8);
+}
+
+.gutter-left--double {
+  padding-left: rhythm(1/2);
+}
+
+.gutter-right {
+  padding-right: rhythm(1/4);
+}
+
+.gutter-right--double {
+  padding-right: rhythm(1/2);
+}
+
+.gutters--vertical {
+  padding-top: rhythm(1/8);
+  padding-bottom: rhythm(1/8);
+}
+
+@include breakpoint($lt-small) {
+
+  .gutter-left {
+    padding-left: 0;
+  }
+
+  .gutter-right {
+    padding-right: 0;
+  }
+
+}
+
+// bleed
+.bleed--single {
+  @include bleed(-0.25);
+}
+
+// margins
+.leader {
+  margin-top: rhythm(1);
+
+  &--third {
+    margin-top: rhythm(1/3);
+  }
+
+  &--half {
+    margin-top: rhythm(1/2);
+  }
+
+  &--two-third {
+    margin-top: rhythm(2/3);
+  }
+
+  &--double {
+    margin-top: rhythm(2);
+  }
+
+  &--large {
+    margin-top: rhythm(4);
+  }
+
+  &-inside {
+    padding-top: rhythm(1);
+  }
+
+  &-inside--double {
+    padding-top: rhythm(2);
+  }
+
+  &-inside--half {
+    padding-top: rhythm(1/2);
+  }
+}
+
+.margin-right {
+
+  margin-right: rhythm(1/4);
+
+  &--double {
+    margin-right: rhythm(1/2);
+  }
+
+}
+
+.trailer {
+  padding-bottom: rhythm(1);
+
+  &--third {
+    padding-bottom: rhythm(1/3);
+  }
+
+  &--half {
+    padding-bottom: rhythm(1/2);
+  }
+
+  &--two-third {
+    padding-bottom: rhythm(2/3);
+  }
+
+  &--double {
+    padding-bottom: rhythm(2);
+  }
+
+  &--large {
+    padding-bottom: rhythm(3);
+  }
+
+  &-outside {
+    margin-bottom: rhythm(1);
+  }
+}

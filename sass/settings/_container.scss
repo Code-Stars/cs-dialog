@@ -1,0 +1,169 @@
+// -----------------------------------
+// container/breakpoints
+// -----------------------------------
+
+// -----------------------------------
+// Default view-port: Smaller than 768px (mobile first)
+// -----------------------------------
+
+.container {
+
+  @include column-behavior();
+  @include column-width(18/18);
+
+  display: inline-block;
+  vertical-align: top;
+
+  &--even {
+    @include column-width(18/18);
+  }
+
+  &--third {
+    @include column-width(18/18);
+  }
+
+  &--full {
+    @include column-width(18/18);
+  }
+
+  &--master {
+    @include column-width(18/18);
+
+    &-fixed {
+      @include column-width(11/18);
+    }
+  }
+
+  &--slave {
+    @include column-width(18/18);
+
+    &-fixed {
+      @include column-width(7/18);
+    }
+  }
+
+  &--main {
+    @include column-width(18/18);
+  }
+
+  &--aside {
+    @include column-width(18/18);
+  }
+
+  &--stick {
+    width: auto;
+  }
+
+  &--middle {
+
+    @include column-width(18/18);
+    display: inline-block;
+  }
+}
+
+// -----------------------------------
+// Greater than 768px (tablet portrait)
+// -----------------------------------
+
+@include breakpoint($gt-small) {
+
+  .container {
+
+    &--even {
+      @include column-width(9/18);
+    }
+
+    &--third {
+      @include column-width(18/18);
+    }
+
+    &--full {
+      @include column-width(18/18);
+    }
+
+    &--master {
+      @include column-width(11/18);
+    }
+
+    &--slave {
+      @include column-width(7/18);
+    }
+
+    &--main {
+      @include column-width(18/18);
+    }
+
+    &--aside {
+      @include column-width(18/18);
+    }
+
+    &--middle {
+
+      display: table;
+
+      .l-container {
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// -----------------------------------
+// Greater than 1024px (Tablet landscape, old desktops)
+// -----------------------------------
+
+@include breakpoint($gt-medium) {
+
+  .container {
+
+    &--even {
+      @include column-width(9/18);
+    }
+
+    &--third {
+      @include column-width(6/18);
+    }
+
+    &--full {
+      @include column-width(18/18);
+    }
+
+    &--master {
+      @include column-width(14/18);
+    }
+
+    &--slave {
+      @include column-width(4/18);
+    }
+
+    &--main {
+      @include column-width(12/18);
+    }
+
+    &--aside {
+      @include column-width(6/18);
+    }
+  }
+}
+
+// The container-cluster--level class allows
+// for child containers to be leveled in height
+.container-cluster {
+}
+
+.container-cluster--level {
+  display: table;
+  width: 100%;
+  & > .container {
+    display: table-cell;
+  }
+}
+
+@include breakpoint($lt-small) {
+
+  .container .container .gutter-left--double {
+    /* Fix for recursive embedded container paddings (meer-over pagina) */
+    padding-left: 0;
+  }
+
+}
