@@ -225,6 +225,10 @@
   margin-bottom: 1.5em;
 }
 
+.hide {
+  display: none;
+}
+
 .flo-dialog {
   padding-left: 24px;
   padding-right: 24px;
@@ -287,5 +291,3 @@
     display: none;
   }
 }
-
-/*# sourceMappingURL=flo-dialog.css.map */

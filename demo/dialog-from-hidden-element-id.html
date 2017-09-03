@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dialog Demo</title>
+    <link rel="stylesheet" href="../dist/css/demo.css"/>
+    <link rel="stylesheet" href="../dist/css/flo-dialog.css"/>
+    <script type="text/javascript" src="../src/deps/flo-event.min.js"></script>
+    <script type="text/javascript" src="../src/flo-dialog.js"></script>
+</head>
+<body>
+
+<div class="gutters">
+
+    <div class="trailer--half">
+        <h1>Live demo</h1>
+    </div>
+
+    <button data-title="Demo Dialog" data-flo-dialog-element-id="flo-dialog-demo-content" class="flo-dialog-t">
+        Open Demo Dialog from hidden element
+    </button>
+</div>
+
+<div id="flo-dialog-demo-content" style="display: none;">
+    Dialog content from HTML element with ID 'flo-dialog-demo-content'.
+</div>
+
+<script type="text/javascript">
+    var App = {
+        Dialog: null // make it accessible for the entire app
+    };
+
+    (function () { // DOM ready
+        App.Dialog = new FloDialog({
+            cache: true // do not remove dialog from HTML, but use the already generated version
+        });
+        App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
+    })();
+</script>
+</body>
+</html>

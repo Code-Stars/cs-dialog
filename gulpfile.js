@@ -10,6 +10,7 @@ var gulp = require('gulp'),
     compass = require('gulp-compass'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
+    concat = require('gulp-concat'),
     pump = require('pump');
 
 gulp.task('watch', function () {
@@ -47,7 +48,8 @@ gulp.task('compress', function (cb) {
     // here we are going to build
     // the project for production
     pump([
-            gulp.src('src/*.js'),
+            gulp.src(['src/deps/*.js', 'src/*.js']),
+            concat('flo-dialog.js'),
             uglify(),
             rename({suffix: '.min'}),
             gulp.dest('dist/js')
@@ -56,5 +58,16 @@ gulp.task('compress', function (cb) {
     );
 });
 
+gulp.task('update-deps', function (cb) {
+
+    // copy newest version of flo-event into project.
+    pump([
+            gulp.src('node_modules/flo-event/dist/js/flo-event.min.js'),
+            gulp.dest('src/deps')
+        ],
+        cb
+    );
+});
+
 gulp.task('default', ['compass', 'watch']);
-gulp.task('build', ['compress']);
+gulp.task('build', ['update-deps', 'compress']);
