@@ -16,9 +16,9 @@
         <h1>Live demo</h1>
     </div>
 
-    <a data-title="Demo Dialog" href="./load-me.html" class="flo-dialog-t">
+    <button data-title="Demo Dialog" data-url="./load-me.html" data-dialog="flo-dialog">
         Open Demo Dialog from url
-    </a>
+    </button>
 </div>
 
 <script type="text/javascript">
@@ -28,7 +28,8 @@
 
     (function () { // DOM ready
         App.Dialog = new FloDialog({
-            cache: true // do not remove dialog from HTML, but use the already generated version
+            cache: true, // do not remove dialog from HTML, but use the already generated version
+            fade: true
         });
         App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
     })();

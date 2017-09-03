@@ -225,13 +225,10 @@
   margin-bottom: 1.5em;
 }
 
-.hide {
-  display: none;
-}
-
 .flo-dialog {
   padding-left: 24px;
   padding-right: 24px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
   position: absolute;
   left: 0;
   top: 0;
@@ -269,7 +266,7 @@
   font-size: 12px;
 }
 .flo-dialog.hide {
-  display: none;
+  opacity: 0;
 }
 
 .flo-dialog-cloak {

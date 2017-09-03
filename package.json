@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "gulpfile.js",
-  "dependencies": {
-    "flo-event": "git://github.com/Code-Stars/flo-event.git"
-  },
+  "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-compass": "^2.1.0",

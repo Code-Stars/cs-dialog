@@ -58,16 +58,16 @@ gulp.task('compress', function (cb) {
     );
 });
 
-gulp.task('update-deps', function (cb) {
-
-    // copy newest version of flo-event into project.
-    pump([
-            gulp.src('node_modules/flo-event/dist/js/flo-event.min.js'),
-            gulp.dest('src/deps')
-        ],
-        cb
-    );
-});
+// gulp.task('update-deps', function (cb) {
+//
+//     // copy newest version of flo-event into project.
+//     pump([
+//             gulp.src('node_modules/flo-event/dist/js/flo-event.min.js'),
+//             gulp.dest('src/deps')
+//         ],
+//         cb
+//     );
+// });
 
 gulp.task('default', ['compass', 'watch']);
-gulp.task('build', ['update-deps', 'compress']);
+gulp.task('build', ['compress']);

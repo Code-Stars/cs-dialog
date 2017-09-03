@@ -16,7 +16,7 @@
         <h1>Live demo</h1>
     </div>
 
-    <button data-title="Demo Dialog" data-flo-dialog-element-id="flo-dialog-demo-content" class="flo-dialog-t">
+    <button data-dialog="flo-dialog" data-id="flo-dialog-demo-content" data-title="Demo Dialog">
         Open Demo Dialog from hidden element
     </button>
 </div>
@@ -32,7 +32,8 @@
 
     (function () { // DOM ready
         App.Dialog = new FloDialog({
-            cache: true // do not remove dialog from HTML, but use the already generated version
+            cache: true, // do not remove dialog from HTML, but use the already generated version
+            fade: true
         });
         App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
     })();

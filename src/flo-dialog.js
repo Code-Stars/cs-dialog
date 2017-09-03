@@ -43,31 +43,53 @@ FloDialog.prototype.mergeConfig = function (obj1, obj2) {
 };
 
 /**
+ * Fade's an element in.
+ *
+ * @param el
+ * @param display
+ */
+FloDialog.prototype.fadeIn = function (el) {
+
+    el.style.opacity = 0;
+
+
+    var tick = function() {
+        el.style.opacity = +el.style.opacity + 0.01;
+
+
+        if (+el.style.opacity < 1) {
+            (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
+        }
+    };
+
+    tick();
+};
+
+/**
  * Bind events to the elements.
  */
 FloDialog.prototype.bindTriggers = function () {
 
-    var openTriggers = document.getElementsByClassName('flo-dialog-t');
+    var triggers = document.querySelectorAll('[data-dialog="flo-dialog"]');
+    for (var i = 0; i < triggers.length; i++) {
 
-    for (var i = 0; i < openTriggers.length; i++) {
-
-        this.addEvent(openTriggers[i], "click", function (event) {
+        this.addEvent(triggers[i], "click", function (event) {
 
             var target = (event.currentTarget) ? event.currentTarget : event.srcElement,
                 title = target.getAttribute('data-title'),
-                href = target.getAttribute('href'),
+                url = target.getAttribute('data-url'),
                 contents = '';
 
             // load content from hidden element
-            if (target.getAttribute('data-flo-dialog-element-id')) {
-                contents = document.getElementById(target.getAttribute('data-flo-dialog-element-id')).innerHTML;
+            if (target.getAttribute('data-id')) {
+                contents = document.getElementById(target.getAttribute('data-id')).innerHTML;
             }
 
             // load content from URL
-            if (href !== null && href !== '' && href !== "javascript:" && href !== '#') {
+            if (url !== null && url !== '' && url !== "javascript:" && url !== '#') {
                 event.preventDefault();
                 contents = 'Loading...';
-                this.loadContentFromUrl(href);
+                this.loadContentFromUrl(url);
             }
 
             this.openDialog(this.renderContainerHtml(contents));
@@ -99,7 +121,7 @@ FloDialog.prototype.openDialog = function (dialog) {
 
     this.initCloseTriggers(dialog);
 
-    if (typeof dialog !== "undefined") {
+    if (typeof dialog !== 'undefined') {
 
         this.activeDialog = dialog;
         this.openCloak();
@@ -107,7 +129,12 @@ FloDialog.prototype.openDialog = function (dialog) {
         var positionTop = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0);
         var screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-        dialog.className = dialog.className.replace(/\bhide\b/, '');
+        if (!this.config.fade) {
+            dialog.className = dialog.className.replace(/\bhide\b/, '');
+        } else {
+            this.fadeIn(dialog);
+        }
+
         dialog.setAttribute("style", "top:" + (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + "px");
     }
 };
@@ -149,9 +176,10 @@ FloDialog.prototype.closeDialog = function (dialog) {
     if (typeof dialog !== 'undefined') {
 
         if (this.config.cache) {
-            if (dialog.className.indexOf('hide') === -1) {
-                dialog.className += " hide";
-            }
+            // if (dialog.className.indexOf('hide') === -1) {
+            //     dialog.className += " hide";
+            // }
+            dialog.style.display = 'none';
         } else {
             dialog.parentNode.removeChild(dialog);
         }
@@ -255,7 +283,7 @@ FloDialog.prototype.loadContentFromUrl = function (url) {
         setTimeout(
             function () {
                 this.addElementToActiveDialogContent(response.data);
-            }.bind(this), 2000
+            }.bind(this), 1000
         )
     }.bind(this));
 };
