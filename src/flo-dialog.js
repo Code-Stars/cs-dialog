@@ -46,7 +46,6 @@ FloDialog.prototype.mergeConfig = function (obj1, obj2) {
  * Fade's an element in.
  *
  * @param el
- * @param display
  */
 FloDialog.prototype.fadeIn = function (el) {
 
