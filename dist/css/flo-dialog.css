@@ -258,6 +258,9 @@
   background-color: #fff;
   line-height: normal;
 }
+.flo-dialog__img {
+  width: 100%;
+}
 .flo-dialog__footer {
   text-align: center;
   background-color: #fff;
