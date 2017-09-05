@@ -202,7 +202,6 @@ FloDialog.prototype.initCloseTriggers = function (dialog) {
 
     // close dialog via cloak trigger
     if (typeof this.cloak !== 'undefined') {
-
         this.addEvent(this.cloak, "click", function (event) {
             if (event.target !== this.activeDialog) {
                 this.closeDialog(this.activeDialog);
@@ -415,7 +414,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
         container.appendChild(content);
     }
 
-    footer.className = 'flo-dialog__footer gutters--double';
+    footer.className = 'flo-dialog__footer gutters--double leader-inside--half';
     footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog 2017. All rights reserved.';
     container.appendChild(footer);
 

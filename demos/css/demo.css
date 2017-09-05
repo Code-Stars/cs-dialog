@@ -1,0 +1,42 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+h1, h2, h3 {
+    font-family: Arial, sans-serif;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+figure {
+    display: inline-block;
+}
+
+button {
+    display: block;
+    width: 250px;
+    height: 30px;
+    line-height: 30px;
+}
+
+fieldset {
+    padding: 5px;
+}
+
+fieldset span {
+    line-height: 25px;
+}
+
+legend {
+    font-weight: bold;
+}

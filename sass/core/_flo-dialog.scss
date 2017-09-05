@@ -18,18 +18,12 @@
   }
 
   &__header {
-
     height: rhythm(2);
     line-height: rhythm(2);
     background-color: #fff;
-
-    .title {
-      line-height: rhythm(2);
-    }
   }
 
   &__body {
-
     position: relative;
     background-color: #fff;
     line-height: normal;
@@ -40,7 +34,6 @@
   }
 
   &__footer {
-
     text-align: center;
     background-color: #fff;
     height: rhythm(2);

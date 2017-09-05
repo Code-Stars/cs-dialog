@@ -250,9 +250,6 @@
   line-height: 3em;
   background-color: #fff;
 }
-.flo-dialog__header .title {
-  line-height: 3em;
-}
 .flo-dialog__body {
   position: relative;
   background-color: #fff;
@@ -279,6 +276,7 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 9;
+  cursor: pointer;
 }
 .flo-dialog-cloak--main-menu {
   display: block;

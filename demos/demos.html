@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dialog Demo - Content from hidden element ID</title>
+    <link rel="stylesheet" href="css/demo.css"/>
+    <link rel="stylesheet" href="../dist/css/flo-dialog.css"/>
+    <script type="text/javascript" src="../src/flo-dialog.js"></script>
+</head>
+<body>
+
+<article class="leader-inside">
+
+    <header class="gutters trailer">
+
+        <div class="trailer">
+            <h1>FloDialog - Live demos</h1>
+        </div>
+
+        <fieldset>
+            <legend>Current settings</legend>
+
+            <div id="flo-dialog-settings"></div>
+        </fieldset>
+
+    </header>
+
+    <section class="gutters trailer">
+
+        <header class="trailer">
+            <h3>Example 1 - Loading dialog with content from an hidden element</h3>
+        </header>
+
+        <div id="flo-dialog-demo-content" style="display: none;">
+            Dialog content from HTML element with ID 'flo-dialog-demo-content'.
+        </div>
+
+        <button data-dialog="flo-dialog" data-id="flo-dialog-demo-content" data-title="Demo Dialog">
+            Open Demo Dialog from hidden element
+        </button>
+
+    </section>
+
+    <section class="gutters trailer">
+
+        <header class="trailer">
+            <h3>Example 2 - Loading dialog with an image as the content</h3>
+        </header>
+
+        <a data-dialog="flo-dialog" data-title="Dialog Demo - Content image"
+           data-image-url="/flo-dialog/demos/images/templo-del-loto.jpg" href="">
+            <figure>
+                <img src="http://localhost/wp-starter/wp-content/uploads/2017/08/templo-del-loto-300x201.jpg" alt="">
+            </figure>
+        </a>
+
+    </section>
+
+    <section class="gutters trailer">
+
+        <header class="trailer">
+            <h3>Example 3 - Loading dialog with content from a URL</h3>
+        </header>
+
+        <button data-title="Demo Dialog" data-url="./partials/load-me.html" data-dialog="flo-dialog">
+            Open Demo Dialog from url
+        </button>
+
+    </section>
+
+</article>
+
+<script type="text/javascript">
+    /**
+     * This is how we set up the FloDialog.
+     */
+    var App = {
+        Dialog: null // make it accessible for the entire app
+    };
+
+    (function () { // DOM ready
+
+        App.Dialog = new FloDialog({
+            cache: true, // do not remove dialog from HTML, but use the already generated version
+            fade: true, // will make the dialog fade-in instead of appearing at once
+            position: 'fixed' // will make the dialog move along with the screen
+        });
+
+        App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
+    })();
+</script>
+
+<script type="text/javascript">
+    (function (d) {
+        // show settings on this demo page
+        var config = '';
+        for (var setting in App.Dialog.config) {
+            if (App.Dialog.config.hasOwnProperty(setting))
+                config += '<span>' + setting + ': ' + App.Dialog.config[setting] + '</span><br />';
+        }
+        d.getElementById('flo-dialog-settings').innerHTML = config;
+    })(document);
+</script>
+</body>
+</html>
