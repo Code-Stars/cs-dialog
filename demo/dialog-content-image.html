@@ -30,7 +30,8 @@
     (function () { // DOM ready
         App.Dialog = new FloDialog({
             cache: true, // do not remove dialog from HTML, but use the already generated version
-            fade: true
+            fade: true,
+            position: 'fixed'
         });
         App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
     })();

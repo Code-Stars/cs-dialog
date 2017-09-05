@@ -1,7 +1,7 @@
 /**
  * FloDialog - Modal dialog script in vanilla JavaScript.
  *
- * @version 03-09-2017
+ * @version 05-09-2017
  * @author Floris Weijenburg <https://github.com/Code-Stars>
  */
 var FloDialog = function (config) {
@@ -9,11 +9,12 @@ var FloDialog = function (config) {
     this.id = Date.now();
     this.cloak = this.renderCloakHtml();
     this.activeDialog = null;
+    this.footerText = '';
 
     this.config = this.mergeConfig({
         cache: true,
         fade: false,
-        footerText: ''
+        position: 'absolute'
     }, config);
 
     // bind triggers found in DOM
@@ -158,9 +159,14 @@ FloDialog.prototype.positionDialog = function (dialog, callback) {
 
     // first wait content to be loaded in the DOM
     this.waitForElement(dialog, function () {
+
         dialog.setAttribute("style", "top:" + (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + "px");
+
+        if (this.config.position === 'fixed') {
+            dialog.style.position = 'fixed';
+        }
         callback();
-    });
+    }.bind(this));
 };
 
 /**
@@ -410,7 +416,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     }
 
     footer.className = 'flo-dialog__footer gutters--double';
-    footer.innerHTML = this.config.footerText !== '' ? this.config.footerText : '&copy; FloDialog 2017. All rights reserved.';
+    footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog 2017. All rights reserved.';
     container.appendChild(footer);
 
     return container;
@@ -422,5 +428,5 @@ FloDialog.prototype.renderContainerHtml = function (content) {
  * @param text
  */
 FloDialog.prototype.setFooterText = function (text) {
-    this.config.footerText = text;
+    this.footerText = text;
 };
