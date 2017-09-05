@@ -406,11 +406,10 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     header.appendChild(headerColumn2);
 
     headerCloseIcon.className = 'fa fa-times';
-    headerCloseIcon.innerHTML = 'x';
+    headerCloseBtn.appendChild(headerCloseIcon);
 
     headerCloseBtn.href = 'JavaScript:;';
     headerCloseBtn.className = 'flo-dialog__close-btn gutters--double';
-    headerCloseBtn.appendChild(headerCloseIcon);
     headerColumn2.appendChild(headerCloseBtn);
 
     if (typeof content !== 'undefined' && content !== null) {
