@@ -18,6 +18,10 @@ html, body {
     color: #222;
 }
 
+p {
+    margin: 10px 0;
+}
+
 figure {
     display: inline-block;
 }

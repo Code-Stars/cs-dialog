@@ -69,6 +69,7 @@ FloDialog.prototype.fadeIn = function (el) {
 FloDialog.prototype.bindTriggers = function () {
 
     var triggers = document.querySelectorAll('[data-dialog="flo-dialog"]');
+
     for (var i = 0; i < triggers.length; i++) {
 
         this.addEvent(triggers[i], "click", function (event) {
@@ -78,24 +79,16 @@ FloDialog.prototype.bindTriggers = function () {
                 content = document.createElement('div');
 
             var attr = { // all possible flo-dialog element attributes
+                id: target.getAttribute('data-id'),
                 title: target.getAttribute('data-title'),
                 url: target.getAttribute('data-url'),
-                imageUrl: target.getAttribute('data-image-url'),
-                id: target.getAttribute('data-id')
+                imageUrl: target.getAttribute('data-image-url')
             };
 
             // load content from hidden element
             if (attr.id !== null) {
                 var hiddenContent = document.getElementById(attr.id);
-                content.appendChild(hiddenContent.firstChild);
-            }
-
-            // load content from URL
-            if (attr.url !== null && attr.url !== '' && attr.url !== "javascript:" && attr.url !== '#') {
-                var message = document.createElement('span');
-                message.innerHTML = 'Loading...';
-                content.appendChild(message);
-                this.loadContentFromUrl(attr.url);
+                content.appendChild(hiddenContent.firstChild.cloneNode(true));
             }
 
             // load content from image src
@@ -104,21 +97,31 @@ FloDialog.prototype.bindTriggers = function () {
                 content.appendChild(image);
             }
 
+            // load content from URL (asynchronous)
+            if (attr.url !== null && attr.url !== '' && attr.url !== "javascript:" && attr.url !== '#') {
+
+                var message = document.createElement('span');
+                message.textContent = 'Loading...';
+                content.appendChild(message);
+
+                this.get(attr.url, function (response) {
+
+                    content.innerHTML = response.data;
+
+                    this.waitForElement(content, function () {
+
+                        // re-position dialog after loading dynamic content
+                        this.positionDialog(this.activeDialog);
+
+                    }.bind(this));
+
+                }.bind(this));
+            }
+
             this.openDialog(this.renderContainerHtml(content));
             this.setTitle(attr.title);
 
         }.bind(this), false);
-    }
-};
-
-/**
- * Set dialog height for scrollable content. (optional).
- */
-FloDialog.prototype.setHeight = function (dialog, height) {
-
-    if (typeof dialog !== 'undefined') {
-        var dialogBody = dialog.getElementsByClassName('flo-dialog__body')[0];
-        dialogBody.setAttribute("style", "height:" + height + "px; overflow-y: scroll");
     }
 };
 
@@ -160,12 +163,15 @@ FloDialog.prototype.positionDialog = function (dialog, callback) {
     // first wait content to be loaded in the DOM
     this.waitForElement(dialog, function () {
 
-        dialog.setAttribute("style", "top:" + (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + "px");
+        dialog.style.top = (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + "px";
 
         if (this.config.position === 'fixed') {
             dialog.style.position = 'fixed';
         }
-        callback();
+
+        if (typeof callback === 'function') {
+            callback();
+        }
     }.bind(this));
 };
 
@@ -275,16 +281,6 @@ FloDialog.prototype.setTitle = function (title) {
 };
 
 /**
- * Clear contents of a container.
- * @param container
- */
-FloDialog.prototype.clearContainer = function (container) {
-
-    container.innerHTML = "";
-
-};
-
-/**
  * Add event (IE fallback).
  * @param obj
  * @param type
@@ -302,37 +298,13 @@ FloDialog.prototype.addEvent = function (obj, type, fn) {
         obj.addEventListener(type, fn, false);
 };
 
-/**
- * Set dialog Y offset.
- *
- * @param yOffset
- */
-FloDialog.prototype.setYOffset = function (yOffset) {
-
-    var screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    this.activeDialog.setAttribute("style", "top:" + (yOffset + screenHeight / 2 - this.activeDialog.offsetHeight / 2) + "px");
-};
-
-/**
- * Load content from URL.
- * @param url
- */
-FloDialog.prototype.loadContentFromUrl = function (url) {
-
-    this.get(url, function (response) {
-        setTimeout(
-            function () {
-                var dialogBody = this.activeDialog.getElementsByClassName('flo-dialog__body')[0];
-                dialogBody.innerHTML = response.data;
-            }.bind(this), 1000
-        )
-    }.bind(this));
-};
-
 FloDialog.prototype.loadImageContent = function (src) {
+
     var image = document.createElement('img');
+
     image.src = src;
     image.className = 'flo-dialog__img';
+
     return image;
 };
 
@@ -427,8 +399,37 @@ FloDialog.prototype.renderContainerHtml = function (content) {
 /**
  * Set footer text.
  *
- * @param text
+ * @param text {string}
  */
 FloDialog.prototype.setFooterText = function (text) {
     this.footerText = text;
+};
+
+/**
+ * Set dialog Y offset.
+ *
+ * @param yOffset
+ */
+FloDialog.prototype.setYOffset = function (yOffset) {
+    var screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    this.activeDialog.setAttribute("style", "top:" + (yOffset + screenHeight / 2 - this.activeDialog.offsetHeight / 2) + "px");
+};
+
+/**
+ * Clear contents of a container.
+ * @param container
+ */
+FloDialog.prototype.clearContainer = function (container) {
+    container.innerHTML = "";
+};
+
+/**
+ * Set dialog height for scrollable content. (optional).
+ */
+FloDialog.prototype.setHeight = function (dialog, height) {
+
+    if (typeof dialog !== 'undefined') {
+        var dialogBody = dialog.getElementsByClassName('flo-dialog__body')[0];
+        dialogBody.setAttribute("style", "height:" + height + "px; overflow-y: scroll");
+    }
 };

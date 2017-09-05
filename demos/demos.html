@@ -62,8 +62,8 @@
             <h3>Example 3 - Loading dialog with content from a URL</h3>
         </header>
 
-        <button data-title="Demo Dialog" data-url="./partials/load-me.html" data-dialog="flo-dialog">
-            Open Demo Dialog from url
+        <button data-title="Demo Dialog" data-url="./partials/demo-content-partial.html" data-dialog="flo-dialog">
+            Open Demo Dialog from URL
         </button>
 
     </section>
@@ -81,7 +81,7 @@
     (function () { // DOM ready
 
         App.Dialog = new FloDialog({
-            cache: true, // do not remove dialog from HTML, but use the already generated version
+            cache: false, // do not remove dialog from HTML, but use the already generated version
             fade: true, // will make the dialog fade-in instead of appearing at once
             position: 'fixed' // will make the dialog move along with the screen
         });
