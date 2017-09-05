@@ -265,6 +265,9 @@
   line-height: 3em;
   font-size: 12px;
 }
+.flo-dialog__close-btn {
+  text-decoration: none;
+}
 .flo-dialog.hide {
   display: block;
   opacity: 0;

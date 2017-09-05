@@ -42,6 +42,10 @@
 
   }
 
+  &__close-btn {
+    text-decoration: none;
+  }
+
   &.hide {
     display: block;
     opacity: 0;

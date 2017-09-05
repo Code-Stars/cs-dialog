@@ -190,7 +190,7 @@ FloDialog.prototype.waitForElement = function (element, callback) {
  */
 FloDialog.prototype.initCloseTriggers = function (dialog) {
 
-    var closeTriggers = dialog.getElementsByClassName('flo-dialog--close');
+    var closeTriggers = dialog.getElementsByClassName('flo-dialog__close-btn');
 
     for (var j = 0; j < closeTriggers.length; j++) {
 
@@ -385,7 +385,8 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     var headerColumn1 = document.createElement('div'),
         headerColumn2 = document.createElement('div'),
         headerTitle = document.createElement('h2'),
-        headerCloseBtn = document.createElement('a');
+        headerCloseBtn = document.createElement('a'),
+        headerCloseIcon = document.createElement('i');
 
     container.id = 'flo-dialog-' + this.id;
     container.className = 'flo-dialog hide';
@@ -401,12 +402,15 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     headerColumn1.appendChild(headerTitle);
 
     headerColumn2.className = 'container container--slave';
-    headerColumn2.style = 'text-align: right';
+    headerColumn2.style.textAlign = 'right';
     header.appendChild(headerColumn2);
 
+    headerCloseIcon.className = 'fa fa-times';
+    headerCloseIcon.innerHTML = 'x';
+
     headerCloseBtn.href = 'JavaScript:;';
-    headerCloseBtn.className = 'flo-dialog--close gutters--double fa fa-times';
-    headerCloseBtn.innerHTML = 'x';
+    headerCloseBtn.className = 'flo-dialog__close-btn gutters--double';
+    headerCloseBtn.appendChild(headerCloseIcon);
     headerColumn2.appendChild(headerCloseBtn);
 
     if (typeof content !== 'undefined' && content !== null) {
