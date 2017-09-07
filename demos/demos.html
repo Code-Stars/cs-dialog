@@ -82,24 +82,24 @@
 
         App.Dialog = new FloDialog({
             cache: false, // do not remove dialog from HTML, but use the already generated version
-            fade: true, // will make the dialog fade-in instead of appearing at once
+            effect: {
+                fade: false, // will make the dialog fade-in instead of appearing at once
+                fall: true // will make the dialog 'fall out of the sky' when appearing
+            },
             position: 'fixed' // will make the dialog move along with the screen
         });
 
         App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
     })();
 </script>
-
 <script type="text/javascript">
     (function (d) {
-        // show settings on this demo page
-        var config = '';
-        for (var setting in App.Dialog.config) {
-            if (App.Dialog.config.hasOwnProperty(setting))
-                config += '<span>' + setting + ': ' + App.Dialog.config[setting] + '</span><br />';
-        }
-        d.getElementById('flo-dialog-settings').innerHTML = config;
+        /**
+         * Print demo config on page.
+         */
+        d.getElementById('flo-dialog-settings').innerHTML = '<pre>' + JSON.stringify(App.Dialog.config, null, "\t") + '</pre>';
     })(document);
 </script>
+
 </body>
 </html>

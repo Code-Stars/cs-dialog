@@ -11,10 +11,13 @@ var FloDialog = function (config) {
     this.activeDialog = null;
     this.footerText = '';
 
-    this.config = this.mergeConfig({
+    this.config = this.mergeOptions({
         cache: true,
-        fade: false,
-        position: 'absolute'
+        position: 'absolute',
+        effect: {
+            fade: false,
+            fall: false
+        }
     }, config);
 
     // bind triggers found in DOM
@@ -28,7 +31,7 @@ var FloDialog = function (config) {
  * @param obj2
  * @returns {{}}
  */
-FloDialog.prototype.mergeConfig = function (obj1, obj2) {
+FloDialog.prototype.mergeOptions = function (obj1, obj2) {
     var obj3 = {};
     for (var attrName in obj1) {
         if (obj1.hasOwnProperty(attrName)) {
@@ -145,7 +148,7 @@ FloDialog.prototype.openDialog = function (dialog) {
         this.positionDialog(dialog, function () {
 
             // then show dialog
-            if (!this.config.fade) {
+            if (!this.config.effect.fade) {
                 dialog.className = dialog.className.replace(/\bhide\b/, '');
             } else {
                 this.fadeIn(dialog);
