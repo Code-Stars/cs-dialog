@@ -117,8 +117,9 @@ FloDialog.prototype.bindTriggers = function () {
  *
  * @param title {string}
  * @param url {string}
+ * @param callback {function}
  */
-FloDialog.prototype.openUrl = function (title, url) {
+FloDialog.prototype.openUrl = function (title, url, callback) {
 
     var message = document.createElement('span');
     var content = document.createElement('div');
@@ -138,6 +139,9 @@ FloDialog.prototype.openUrl = function (title, url) {
             this.openDialog(this.renderContainerHtml(content));
             this.setTitle(title);
 
+            if (typeof callback === 'function') {
+                callback();
+            }
         }.bind(this));
 
     }.bind(this));
