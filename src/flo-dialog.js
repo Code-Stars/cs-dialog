@@ -102,23 +102,7 @@ FloDialog.prototype.bindTriggers = function () {
 
             // load content from URL (asynchronous)
             if (attr.url !== null && attr.url !== '' && attr.url !== "javascript:" && attr.url !== '#') {
-
-                var message = document.createElement('span');
-                message.textContent = 'Loading...';
-                content.appendChild(message);
-
-                this.get(attr.url, function (response) {
-
-                    content.innerHTML = response.data;
-
-                    this.waitForElement(content, function () {
-
-                        // re-position dialog after loading dynamic content
-                        this.positionDialog(this.activeDialog);
-
-                    }.bind(this));
-
-                }.bind(this));
+                this.openUrl(attr.title, attr.url);
             }
 
             this.openDialog(this.renderContainerHtml(content));
@@ -126,6 +110,37 @@ FloDialog.prototype.bindTriggers = function () {
 
         }.bind(this), false);
     }
+};
+
+/**
+ * Loads content or URL into a dialog.
+ *
+ * @param title {string}
+ * @param url {string}
+ */
+FloDialog.prototype.openUrl = function (title, url) {
+
+    var message = document.createElement('span');
+    var content = document.createElement('div');
+
+    message.textContent = 'Loading...';
+    content.appendChild(message);
+
+    this.get(url, function (response) {
+
+        content.innerHTML = response.data;
+
+        this.waitForElement(content, function () {
+
+            // re-position dialog after loading dynamic content
+            this.positionDialog(this.activeDialog);
+
+            this.openDialog(this.renderContainerHtml(content));
+            this.setTitle(title);
+
+        }.bind(this));
+
+    }.bind(this));
 };
 
 /**

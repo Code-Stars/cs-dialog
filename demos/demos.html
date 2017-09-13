@@ -50,7 +50,7 @@
         <a data-dialog="flo-dialog" data-title="Dialog Demo - Content image"
            data-image-url="/flo-dialog/demos/images/templo-del-loto.jpg" href="">
             <figure>
-                <img src="http://localhost/wp-starter/wp-content/uploads/2017/08/templo-del-loto-300x201.jpg" alt="">
+                <img style="width: 300px;" src="./images/templo-del-loto.jpg" alt="Example image">
             </figure>
         </a>
 
@@ -83,13 +83,20 @@
         App.Dialog = new FloDialog({
             cache: false, // do not remove dialog from HTML, but use the already generated version
             effect: {
-                fade: false, // will make the dialog fade-in instead of appearing at once
+                fade: true, // will make the dialog fade-in instead of appearing at once
                 fall: true // will make the dialog 'fall out of the sky' when appearing
             },
             position: 'fixed' // will make the dialog move along with the screen
         });
 
         App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
+
+        setTimeout(function() {
+
+            // Example 4: programmatically open dialog
+            App.Dialog.openUrl('Programmatically opened dialog!','./partials/demo-content-partial.html');
+
+        }, 1000);
     })();
 </script>
 <script type="text/javascript">
