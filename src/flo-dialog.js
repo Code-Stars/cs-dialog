@@ -65,10 +65,8 @@ FloDialog.prototype.fadeIn = function (el, callback) {
         if (+el.style.opacity < 1) {
             (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
         } else {
-            console.log('klaar!');
             if (typeof callback === 'function')
                 callback();
-
         }
     };
     tick();
@@ -391,7 +389,7 @@ FloDialog.prototype.renderCloakHtml = function () {
  * @returns {Element}
  */
 FloDialog.prototype.renderContainerHtml = function (content) {
-    content = content || null;
+    content = content || document.createElement('div');
 
     var container = document.createElement('div'),
         header = document.createElement('header'),
@@ -427,10 +425,8 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     headerCloseBtn.className = 'flo-dialog__close-btn gutters--double';
     headerColumn2.appendChild(headerCloseBtn);
 
-    if (typeof content !== 'undefined' && content !== null) {
-        content.className = 'flo-dialog__body gutters--double';
-        container.appendChild(content);
-    }
+    content.className = 'flo-dialog__body gutters--double';
+    container.appendChild(content);
 
     footer.className = 'flo-dialog__footer gutters--double leader-inside--half';
     footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog 2017. All rights reserved.';
