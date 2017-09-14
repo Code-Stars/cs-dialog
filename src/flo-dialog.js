@@ -1,7 +1,7 @@
 /**
  * FloDialog - Modal dialog script in vanilla JavaScript.
  *
- * @version 05-09-2017
+ * @version 15-11-2017
  * @author Floris Weijenburg <https://github.com/Code-Stars>
  */
 var FloDialog = function (config) {
@@ -9,6 +9,7 @@ var FloDialog = function (config) {
     this.id = Date.now();
     this.cloak = this.renderCloakHtml();
     this.activeDialog = null;
+    this.content = null;
     this.footerText = '';
 
     this.config = this.mergeOptions({
@@ -27,12 +28,14 @@ var FloDialog = function (config) {
 /**
  * Merge config.
  *
- * @param obj1
- * @param obj2
+ * @param obj1 {object}
+ * @param obj2 {object}
+ *
  * @returns {{}}
  */
 FloDialog.prototype.mergeOptions = function (obj1, obj2) {
     var obj3 = {};
+
     for (var attrName in obj1) {
         if (obj1.hasOwnProperty(attrName)) {
             obj3[attrName] = obj1[attrName];
@@ -62,7 +65,6 @@ FloDialog.prototype.fadeIn = function (el) {
             (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
         }
     };
-
     tick();
 };
 
@@ -92,21 +94,24 @@ FloDialog.prototype.bindTriggers = function () {
             if (attr.id !== null) {
                 var hiddenContent = document.getElementById(attr.id);
                 content.appendChild(hiddenContent.firstChild.cloneNode(true));
-            }
 
+                this.setContent(content);
+                this.openDialog(attr.title);
+            }
+            
             // load content from image src
             if (attr.imageUrl !== null) {
                 var image = this.loadImageContent(attr.imageUrl);
                 content.appendChild(image);
+
+                this.setContent(content);
+                this.openDialog(attr.title);
             }
 
             // load content from URL (asynchronous)
             if (attr.url !== null && attr.url !== '' && attr.url !== "javascript:" && attr.url !== '#') {
-                this.openUrl(attr.title, attr.url);
+                this.openUrl(attr.title, attr.url, null);
             }
-
-            this.openDialog(this.renderContainerHtml(content));
-            this.setTitle(attr.title);
 
         }.bind(this), false);
     }
@@ -133,11 +138,11 @@ FloDialog.prototype.openUrl = function (title, url, callback) {
 
         this.waitForElement(content, function () {
 
+            this.setContent(content);
+
             // re-position dialog after loading dynamic content
             this.positionDialog(this.activeDialog);
-
-            this.openDialog(this.renderContainerHtml(content));
-            this.setTitle(title);
+            this.openDialog(title);
 
             if (typeof callback === 'function') {
                 callback();
@@ -149,11 +154,15 @@ FloDialog.prototype.openUrl = function (title, url, callback) {
 
 /**
  * Open dialog.
- * @param dialog
+ *
+ * @param title {string}
+ * @param callback {function=}
  */
-FloDialog.prototype.openDialog = function (dialog) {
+FloDialog.prototype.openDialog = function (title, callback) {
 
-    var body = document.getElementsByTagName('body')[0];
+    var dialog = this.renderContainerHtml(this.content),
+        body = document.getElementsByTagName('body')[0];
+
     body.appendChild(dialog);
 
     this.initCloseTriggers(dialog);
@@ -166,24 +175,28 @@ FloDialog.prototype.openDialog = function (dialog) {
         // first position dialog
         this.positionDialog(dialog, function () {
 
-            // then show dialog
+            // then show dialog based on fade setting
             if (!this.config.effect.fade) {
                 dialog.className = dialog.className.replace(/\bhide\b/, '');
             } else {
                 this.fadeIn(dialog);
             }
 
+            this.appendTitle(title);
+
+            if (typeof callback === 'function') {
+                callback();
+            }
         }.bind(this));
     }
 };
 
 FloDialog.prototype.positionDialog = function (dialog, callback) {
 
-    var positionTop = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0);
-    var screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    var positionTop = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0),
+        screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-    // first wait content to be loaded in the DOM
-    this.waitForElement(dialog, function () {
+    this.waitForElement(dialog, function () { // first wait content to be loaded in the DOM
 
         dialog.style.top = (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + "px";
 
@@ -282,13 +295,12 @@ FloDialog.prototype.closeCloak = function () {
     }
 };
 
-
 /**
- * Set title.
- * @param title
+ * Append title to dialog DOM element.
+ *
+ * @param title {string}
  */
-FloDialog.prototype.setTitle = function (title) {
-
+FloDialog.prototype.appendTitle = function (title) {
     if (typeof this.activeDialog !== 'undefined') {
 
         var header,
@@ -367,10 +379,11 @@ FloDialog.prototype.renderCloakHtml = function () {
  * Render the container HTML used by the dialog.
  * Content gets added later.
  *
- * @param content {Element}
+ * @param content {Element=}
  * @returns {Element}
  */
 FloDialog.prototype.renderContainerHtml = function (content) {
+    content = content || null;
 
     var container = document.createElement('div'),
         header = document.createElement('header'),
@@ -419,39 +432,19 @@ FloDialog.prototype.renderContainerHtml = function (content) {
 };
 
 /**
+ * Set dialog content;
+ *
+ * @param content
+ */
+FloDialog.prototype.setContent = function (content) {
+    this.content = content;
+};
+
+/**
  * Set footer text.
  *
  * @param text {string}
  */
 FloDialog.prototype.setFooterText = function (text) {
     this.footerText = text;
-};
-
-/**
- * Set dialog Y offset.
- *
- * @param yOffset
- */
-FloDialog.prototype.setYOffset = function (yOffset) {
-    var screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    this.activeDialog.setAttribute("style", "top:" + (yOffset + screenHeight / 2 - this.activeDialog.offsetHeight / 2) + "px");
-};
-
-/**
- * Clear contents of a container.
- * @param container
- */
-FloDialog.prototype.clearContainer = function (container) {
-    container.innerHTML = "";
-};
-
-/**
- * Set dialog height for scrollable content. (optional).
- */
-FloDialog.prototype.setHeight = function (dialog, height) {
-
-    if (typeof dialog !== 'undefined') {
-        var dialogBody = dialog.getElementsByClassName('flo-dialog__body')[0];
-        dialogBody.setAttribute("style", "height:" + height + "px; overflow-y: scroll");
-    }
 };
