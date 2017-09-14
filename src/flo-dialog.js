@@ -52,9 +52,10 @@ FloDialog.prototype.mergeOptions = function (obj1, obj2) {
 /**
  * Fade's an element in.
  *
- * @param el
+ * @param el {Element}
+ * @param callback {function=}
  */
-FloDialog.prototype.fadeIn = function (el) {
+FloDialog.prototype.fadeIn = function (el, callback) {
 
     el.style.opacity = 0;
 
@@ -63,6 +64,11 @@ FloDialog.prototype.fadeIn = function (el) {
 
         if (+el.style.opacity < 1) {
             (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
+        } else {
+            console.log('klaar!');
+            if (typeof callback === 'function')
+                callback();
+
         }
     };
     tick();
@@ -98,7 +104,7 @@ FloDialog.prototype.bindTriggers = function () {
                 this.setContent(content);
                 this.openDialog(attr.title);
             }
-            
+
             // load content from image src
             if (attr.imageUrl !== null) {
                 var image = this.loadImageContent(attr.imageUrl);
@@ -178,15 +184,17 @@ FloDialog.prototype.openDialog = function (title, callback) {
             // then show dialog based on fade setting
             if (!this.config.effect.fade) {
                 dialog.className = dialog.className.replace(/\bhide\b/, '');
-            } else {
-                this.fadeIn(dialog);
-            }
 
+                if (typeof callback === 'function')
+                    callback();
+            } else {
+                this.fadeIn(dialog, function () {
+                    if (typeof callback === 'function')
+                        callback();
+                });
+            }
             this.appendTitle(title);
 
-            if (typeof callback === 'function') {
-                callback();
-            }
         }.bind(this));
     }
 };
