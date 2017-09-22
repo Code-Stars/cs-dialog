@@ -15,6 +15,7 @@ var FloDialog = function (config) {
     this.config = this.mergeOptions({
         cache: true,
         position: 'absolute',
+        closeOnCloakClick: true,
         effect: {
             fade: false,
             fall: false
@@ -145,7 +146,7 @@ FloDialog.prototype.openUrl = function (title, url, callback) {
             this.setContent(content);
 
             // re-position dialog after loading dynamic content
-            this.positionDialog(this.activeDialog);
+            this.positionDialog();
             this.openDialog(title);
 
             if (typeof callback === 'function') {
@@ -177,7 +178,7 @@ FloDialog.prototype.openDialog = function (title, callback) {
         this.openCloak();
 
         // first position dialog
-        this.positionDialog(dialog, function () {
+        this.positionDialog(function () {
 
             // then show dialog based on fade setting
             if (!this.config.effect.fade) {
@@ -197,13 +198,14 @@ FloDialog.prototype.openDialog = function (title, callback) {
     }
 };
 
-FloDialog.prototype.positionDialog = function (dialog, callback) {
+FloDialog.prototype.positionDialog = function (callback) {
 
     var positionTop = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0),
         screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-    this.waitForElement(dialog, function () { // first wait content to be loaded in the DOM
+    var dialog = this.activeDialog;
 
+    this.waitForElement(dialog, function () { // first wait content to be loaded in the DOM
         dialog.style.top = (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + "px";
 
         if (this.config.position === 'fixed') {
@@ -248,7 +250,7 @@ FloDialog.prototype.initCloseTriggers = function (dialog) {
     }
 
     // close dialog via cloak trigger
-    if (typeof this.cloak !== 'undefined') {
+    if (typeof this.cloak !== 'undefined' && this.config.closeOnCloakClick) {
         this.addEvent(this.cloak, "click", function (event) {
             if (event.target !== this.activeDialog) {
                 this.closeDialog(this.activeDialog);
