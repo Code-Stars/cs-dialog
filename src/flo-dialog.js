@@ -1,7 +1,7 @@
 /**
  * FloDialog - Modal dialog script in vanilla JavaScript.
  *
- * @version 15-11-2017
+ * @version 03-10-2017
  * @author Floris Weijenburg <https://github.com/Code-Stars>
  */
 var FloDialog = function (config) {
@@ -165,12 +165,14 @@ FloDialog.prototype.openUrl = function (title, url, callback) {
  */
 FloDialog.prototype.openDialog = function (title, callback) {
 
+    if (this.activeDialog) {
+        return; // don't render a dialog when there already is an active one.
+    }
+
     var dialog = this.renderContainerHtml(this.content),
         body = document.getElementsByTagName('body')[0];
 
     body.appendChild(dialog);
-
-    this.initCloseTriggers(dialog);
 
     if (typeof dialog !== 'undefined') {
 
@@ -233,37 +235,11 @@ FloDialog.prototype.waitForElement = function (element, callback) {
 };
 
 /**
- * Initialize close triggers for opened dialog.
- *
- * @param dialog
- */
-FloDialog.prototype.initCloseTriggers = function (dialog) {
-
-    var closeTriggers = dialog.getElementsByClassName('flo-dialog__close-btn');
-
-    for (var j = 0; j < closeTriggers.length; j++) {
-
-        this.addEvent(closeTriggers[j], "click", function () {
-            this.closeDialog(this.activeDialog);
-
-        }.bind(this), false);
-    }
-
-    // close dialog via cloak trigger
-    if (typeof this.cloak !== 'undefined' && this.config.closeOnCloakClick) {
-        this.addEvent(this.cloak, "click", function (event) {
-            if (event.target !== this.activeDialog) {
-                this.closeDialog(this.activeDialog);
-            }
-        }.bind(this), false);
-    }
-};
-
-/**
  * Close dialog.
- * @param dialog
  */
-FloDialog.prototype.closeDialog = function (dialog) {
+FloDialog.prototype.closeDialog = function () {
+
+    var dialog = this.activeDialog || null;
 
     if (typeof dialog !== 'undefined') {
 
@@ -289,7 +265,6 @@ FloDialog.prototype.openCloak = function () {
         this.cloak.className = this.cloak.className.replace(/\bhide\b/g, "");
     }
 };
-
 
 /**
  * Close cloak.
@@ -380,6 +355,13 @@ FloDialog.prototype.renderCloakHtml = function () {
     cloak.className = 'flo-dialog-cloak hide';
     body.insertBefore(cloak, body.firstChild);
 
+    // close dialog via cloak trigger
+    this.addEvent(cloak, "click", function (event) {
+        if (event.target !== this.activeDialog) {
+            this.closeDialog();
+        }
+    }.bind(this), false);
+
     return cloak;
 };
 
@@ -426,6 +408,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     headerCloseBtn.href = 'JavaScript:;';
     headerCloseBtn.className = 'flo-dialog__close-btn gutters--double';
     headerColumn2.appendChild(headerCloseBtn);
+    this.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this));
 
     content.className = 'flo-dialog__body gutters--double';
     container.appendChild(content);
