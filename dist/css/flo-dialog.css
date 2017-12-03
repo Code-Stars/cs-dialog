@@ -254,6 +254,7 @@
   position: relative;
   background-color: #fff;
   line-height: normal;
+  padding-bottom: 1.5em;
 }
 .flo-dialog__img {
   width: 100%;
