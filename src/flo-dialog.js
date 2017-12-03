@@ -288,6 +288,13 @@ FloDialog.prototype.positionDialog = function (callback) {
     var dialog = this.activeDialog;
 
     this.waitForElement(dialog, function () { // first wait content to be loaded in the DOM
+
+        var maxHeight = screenHeight - screenHeight / 10;
+        if (dialog.offsetHeight > maxHeight) {
+            dialog.style.overflowY = 'scroll';
+            dialog.style.height = maxHeight + 'px';
+        }
+
         dialog.style.top = (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + 'px';
 
         if (this.config.position === 'fixed') {
