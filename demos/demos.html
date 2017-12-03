@@ -35,7 +35,7 @@
             Dialog content from HTML element with ID 'flo-dialog-demo-content'.
         </div>
 
-        <button data-dialog="flo-dialog" data-id="flo-dialog-demo-content" data-title="Demo Dialog">
+        <button data-flo-dialog="hidden-element" data-id="flo-dialog-demo-content" data-title="Demo Dialog" data-type="hidden-element">
             Open Demo Dialog from hidden element
         </button>
 
@@ -47,10 +47,9 @@
             <h3>Example 2 - Loading dialog with an image as the content</h3>
         </header>
 
-        <a data-dialog="flo-dialog" data-title="Dialog Demo - Content image"
-           data-image-url="/flo-dialog/demos/images/templo-del-loto.jpg" href="">
+        <a data-flo-dialog="image" data-title="Dialog Demo - Content image" data-image-url="/flo-dialog/demos/images/templo-del-loto.jpg" href="javascript:;">
             <figure>
-                <img style="width: 300px;" src="./images/templo-del-loto.jpg" alt="Example image">
+                <img style="width: 300px;" src="./images/templo-del-loto.jpg" alt="Example image"/>
             </figure>
         </a>
 
@@ -62,7 +61,7 @@
             <h3>Example 3 - Loading dialog with content from a URL</h3>
         </header>
 
-        <button data-title="Demo Dialog" data-url="./partials/demo-content-partial.html" data-dialog="flo-dialog">
+        <button data-flo-dialog="partial" data-title="Demo Dialog" data-url="./partials/demo-content-partial.html">
             Open Demo Dialog from URL
         </button>
 
