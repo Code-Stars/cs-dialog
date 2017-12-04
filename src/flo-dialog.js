@@ -105,7 +105,7 @@ FloDialog.prototype.bindFloDialogLinks = function () {
                     break;
             }
 
-        }.bind(this), false);
+        }.bind(this));
     }
 };
 
@@ -214,12 +214,12 @@ FloDialog.prototype.openUrl = function (title, url, callback) {
  * Open dialog.
  *
  * @param title {string}
- * @param callback {function}
+ * @param callback {function=}
  */
 FloDialog.prototype.openDialog = function (title, callback) {
 
     this.title = title;
-    this.callback = callback;
+    this.callback = callback || null;
 
     if (!this.activeDialog) {
         this.renderDialog();
@@ -473,7 +473,7 @@ FloDialog.prototype.renderCloakHtml = function () {
         if (event.target !== this.activeDialog) {
             this.closeDialog();
         }
-    }.bind(this), false);
+    }.bind(this));
 
     return cloak;
 };
