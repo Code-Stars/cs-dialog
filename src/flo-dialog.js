@@ -521,7 +521,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     headerCloseBtn.href = 'JavaScript:;';
     headerCloseBtn.className = 'flo-dialog__close-btn gutters--double';
     headerColumn2.appendChild(headerCloseBtn);
-    this.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this), false);
+    this.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this));
 
     content.className = 'flo-dialog__body gutters--double';
     container.appendChild(content);
