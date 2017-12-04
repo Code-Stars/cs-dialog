@@ -7,12 +7,16 @@
 var FloDialog = function (config) {
 
     this.id = Date.now();
+    this.callback = null;
+
     this.cloak = this.renderCloakHtml();
     this.activeDialog = null;
-    this.content = null;
+
+    this.content = '';
     this.footerText = '';
 
     this.config = this.mergeOptions({
+        autoBind: true,
         cache: true,
         position: 'absolute',
         closeOnCloakClick: true,
@@ -22,8 +26,9 @@ var FloDialog = function (config) {
         }
     }, config);
 
-    // bind triggers found in DOM
-    this.bindFloDialogLinks();
+    if (this.config.autoBind) {
+        this.bindFloDialogLinks();
+    }
 };
 
 /**
@@ -54,7 +59,7 @@ FloDialog.prototype.mergeOptions = function (obj1, obj2) {
  * Fade's an element in.
  *
  * @param el {Element}
- * @param callback {function=}
+ * @param callback {function}
  */
 FloDialog.prototype.fadeIn = function (el, callback) {
 
@@ -107,7 +112,7 @@ FloDialog.prototype.bindFloDialogLinks = function () {
 /**
  * Handles the 'partial' type dialogs.
  *
- * @param target
+ * @param target {object}
  */
 FloDialog.prototype.partialHandler = function (target) {
     var attributes = {
@@ -123,7 +128,7 @@ FloDialog.prototype.partialHandler = function (target) {
 /**
  * Handles the 'hidden element' type dialogs.
  *
- * @param target
+ * @param target {object}
  */
 FloDialog.prototype.hiddenElementHandler = function (target) {
 
@@ -145,20 +150,24 @@ FloDialog.prototype.hiddenElementHandler = function (target) {
 
 /**
  * Handles the 'image' type dialogs.
+ * By loading its content from an image src path.
  *
- * @param target
+ * @param target {object}
  */
 FloDialog.prototype.imageHandler = function (target) {
     var content = document.createElement('div');
 
-    var attr = { // all possible flo-dialog element attributes
+    var attr = {
         title: target.getAttribute('data-title'),
         imageUrl: target.getAttribute('data-image-url')
     };
 
-    // load content from image src
     if (attr.imageUrl !== null) {
-        var image = this.loadImageContent(attr.imageUrl);
+        var image = document.createElement('img');
+
+        image.src = attr.imageUrl;
+        image.className = 'flo-dialog__img';
+
         content.appendChild(image);
 
         this.content = content;
@@ -205,7 +214,7 @@ FloDialog.prototype.openUrl = function (title, url, callback) {
  * Open dialog.
  *
  * @param title {string}
- * @param callback {function=}
+ * @param callback {function}
  */
 FloDialog.prototype.openDialog = function (title, callback) {
 
@@ -229,12 +238,9 @@ FloDialog.prototype.renderDialog = function () {
 
     body.appendChild(dialog);
 
-    if (typeof dialog !== 'undefined') {
-        this.activeDialog = dialog;
-
-        this.appendTitle(this.title);
-        this.showDialog();
-    }
+    this.activeDialog = dialog;
+    this.appendTitle(this.title);
+    this.showDialog();
 };
 
 /**
@@ -283,13 +289,13 @@ FloDialog.prototype.showDialog = function () {
 FloDialog.prototype.positionDialog = function (callback) {
 
     var positionTop = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0),
-        screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-    var dialog = this.activeDialog;
+        screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+        dialog = this.activeDialog;
 
     this.waitForElement(dialog, function () { // first wait content to be loaded in the DOM
 
         var maxHeight = screenHeight - screenHeight / 10;
+
         if (dialog.offsetHeight > maxHeight) {
             dialog.style.overflowY = 'scroll';
             dialog.style.height = maxHeight + 'px';
@@ -309,13 +315,14 @@ FloDialog.prototype.positionDialog = function (callback) {
 
 /**
  * Wait for element.
+ *
  * @param element
  * @param callback
  */
 FloDialog.prototype.waitForElement = function (element, callback) {
-    var poops = setInterval(function () {
+    var ticks = setInterval(function () {
         if (element) {
-            clearInterval(poops);
+            clearInterval(ticks);
             callback();
         }
     }, 10);
@@ -374,15 +381,15 @@ FloDialog.prototype.closeCloak = function () {
  * @param title {string}
  */
 FloDialog.prototype.appendTitle = function (title) {
+
     if (typeof this.activeDialog !== 'undefined') {
 
-        var header,
-            titleEl;
+        var headerElement = this.activeDialog.getElementsByClassName('flo-dialog__header')[0],
+            titleElement;
 
-        header = this.activeDialog.getElementsByClassName('flo-dialog__header')[0];
-        if (typeof header !== 'undefined') {
-            titleEl = header.getElementsByClassName('title')[0];
-            titleEl.innerHTML = title;
+        if (typeof headerElement !== 'undefined') {
+            titleElement = headerElement.getElementsByClassName('title')[0];
+            titleElement.innerHTML = title;
         }
     }
 };
@@ -406,10 +413,11 @@ FloDialog.prototype.appendContent = function (content) {
 };
 
 /**
- * Add event (IE fallback).
- * @param obj
- * @param type
- * @param fn
+ * Add event.
+ *
+ * @param obj {object}
+ * @param type {string}
+ * @param fn {function}
  */
 FloDialog.prototype.addEvent = function (obj, type, fn) {
 
@@ -423,16 +431,12 @@ FloDialog.prototype.addEvent = function (obj, type, fn) {
         obj.addEventListener(type, fn, false);
 };
 
-FloDialog.prototype.loadImageContent = function (src) {
-
-    var image = document.createElement('img');
-
-    image.src = src;
-    image.className = 'flo-dialog__img';
-
-    return image;
-};
-
+/**
+ * Performs a GET HTTP-request.
+ *
+ * @param url {string}
+ * @param callback {function}
+ */
 FloDialog.prototype.get = function (url, callback) {
 
     var xhr = new XMLHttpRequest(),
@@ -478,7 +482,7 @@ FloDialog.prototype.renderCloakHtml = function () {
  * Render the container HTML used by the dialog.
  * Content gets added later.
  *
- * @param content {Element=}
+ * @param content {Element}
  * @returns {Element}
  */
 FloDialog.prototype.renderContainerHtml = function (content) {
@@ -517,7 +521,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     headerCloseBtn.href = 'JavaScript:;';
     headerCloseBtn.className = 'flo-dialog__close-btn gutters--double';
     headerColumn2.appendChild(headerCloseBtn);
-    this.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this));
+    this.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this), false);
 
     content.className = 'flo-dialog__body gutters--double';
     container.appendChild(content);
