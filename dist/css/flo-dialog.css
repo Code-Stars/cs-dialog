@@ -273,9 +273,6 @@
   display: block;
   opacity: 0;
 }
-.flo-dialog [class*="fa-times"]:before {
-  content: "x";
-}
 
 .flo-dialog-cloak {
   position: absolute;

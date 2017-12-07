@@ -51,8 +51,4 @@
     display: block;
     opacity: 0;
   }
-
-  [class*="fa-times"]:before {
-    content: "x";
-  }
 }
