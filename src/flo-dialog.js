@@ -276,8 +276,8 @@ FloDialog.prototype.showDialog = function () {
         dialog.style.display = 'block';
 
         this.fadeIn(dialog, function () {
+            this.runEmbeddedJs();
             if (typeof callback === 'function') {
-                this.runEmbeddedJs();
                 callback();
             }
         }.bind(this));
