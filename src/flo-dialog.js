@@ -267,13 +267,17 @@ FloDialog.prototype.showDialog = function () {
     this.positionDialog();
 
     if (!this.config.effect.fade) {
-        if (typeof callback === 'function')
+        if (typeof callback === 'function') {
+            this.runEmbeddedJs();
             callback();
+        }
+
     } else {
         dialog.style.display = 'block';
 
         this.fadeIn(dialog, function () {
             if (typeof callback === 'function') {
+                this.runEmbeddedJs();
                 callback();
             }
         }.bind(this));
@@ -531,6 +535,16 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     container.appendChild(footer);
 
     return container;
+};
+
+/**
+ * Run Javascript that is embedded in the dialog.
+ */
+FloDialog.prototype.runEmbeddedJs = function () {
+    var scripts = this.activeDialog.getElementsByTagName('script');
+    for (var i = 0; i < scripts.length; i++) {
+        eval(scripts[i].text);
+    }
 };
 
 /**
