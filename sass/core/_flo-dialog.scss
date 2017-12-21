@@ -1,20 +1,23 @@
 .flo-dialog {
 
-  @include gutters();
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
   position: absolute;
   left: 0;
   top: 0;
   right: 0;
-  margin: 0 auto;
   z-index: 10;
-  width: 100%;
   height: auto;
+  margin: 0 12px;
+
+  &__inner {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+    width: 100%;
+  }
 
   @include breakpoint($gt-medium) {
     padding-left: 0;
     padding-right: 0;
     width: 50%;
+    margin: 0 auto;
   }
 
   &__header {

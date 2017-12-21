@@ -493,6 +493,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     content = content || document.createElement('div');
 
     var container = document.createElement('div'),
+        containerInner = document.createElement('div'),
         header = document.createElement('header'),
         footer = document.createElement('footer');
 
@@ -505,8 +506,11 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     container.id = 'flo-dialog-' + this.id;
     container.className = 'flo-dialog hide';
 
+    containerInner.className ='flo-dialog__inner';
+    container.appendChild(containerInner);
+
     header.className = 'flo-dialog__header trailer--half';
-    container.appendChild(header);
+    containerInner.appendChild(header);
 
     headerColumn1.className = 'container container--master';
     header.appendChild(headerColumn1);
@@ -528,11 +532,11 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     this.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this));
 
     content.className = 'flo-dialog__body gutters--double';
-    container.appendChild(content);
+    containerInner.appendChild(content);
 
     footer.className = 'flo-dialog__footer gutters--double leader-inside--half';
     footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog 2017. All rights reserved.';
-    container.appendChild(footer);
+    containerInner.appendChild(footer);
 
     return container;
 };
