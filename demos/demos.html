@@ -80,8 +80,9 @@
     (function () { // DOM ready
 
         App.Dialog = new FloDialog({
+            debug: true, // enable debug mode to view console log messages
             autoBind: true, // will automatically bind all the flo-dialog links on the page to their associated event handler
-            cache: false, // do not remove dialog from HTML, but use the already generated version
+            cache: true, // do not remove dialog from HTML, but use the already generated version
             effect: {
                 fade: true, // will make the dialog fade-in instead of appearing at once
                 fall: true // will make the dialog 'fall out of the sky' when appearing
@@ -89,7 +90,7 @@
             position: 'fixed' // will make the dialog move along with the screen
         });
 
-        App.Dialog.setFooterText('&copy; FloDialog 2017 demo. All rights reserved.');
+        App.Dialog.setFooterText('&copy; FloDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
 
         setTimeout(function() {
 

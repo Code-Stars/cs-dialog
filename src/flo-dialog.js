@@ -16,6 +16,7 @@ var FloDialog = function (config) {
     this.footerText = '';
 
     this.config = this.mergeOptions({
+        debug: false,
         autoBind: true,
         cache: true,
         position: 'absolute',
@@ -300,15 +301,26 @@ FloDialog.prototype.positionDialog = function (callback) {
 
         var maxHeight = screenHeight - screenHeight / 10;
 
+        dialog.style.height = 'auto';  // resets to default height
+        dialog.style.overflowY = 'visible';
+
         if (dialog.offsetHeight > maxHeight) {
             dialog.style.overflowY = 'scroll';
             dialog.style.height = maxHeight + 'px';
         }
 
+        if (this.config.position === 'fixed') {
+            positionTop = 0;
+            dialog.style.position = 'fixed';
+        }
+
         dialog.style.top = (positionTop + screenHeight / 2 - dialog.offsetHeight / 2) + 'px';
 
-        if (this.config.position === 'fixed') {
-            dialog.style.position = 'fixed';
+        if (this.config.debug) {
+            console.log('dialog.offsetHeight: ' + dialog.offsetHeight);
+            console.log('screenHeight: ' + screenHeight);
+            console.log('positionTop: ' + positionTop);
+            console.log('maxHeight: ' + maxHeight);
         }
 
         if (typeof callback === 'function') {
@@ -454,7 +466,7 @@ FloDialog.prototype.get = function (url, callback) {
             response.data = xhr.responseText;
             callback(response);
         } else {
-            console.error('Request failed.  Returned status of ' + xhr.status);
+            console.error('Request failed. Returned status of ' + xhr.status);
         }
     };
 
@@ -506,7 +518,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     container.id = 'flo-dialog-' + this.id;
     container.className = 'flo-dialog hide';
 
-    containerInner.className ='flo-dialog__inner';
+    containerInner.className = 'flo-dialog__inner';
     container.appendChild(containerInner);
 
     header.className = 'flo-dialog__header trailer--half';
@@ -515,7 +527,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     headerColumn1.className = 'container container--master';
     header.appendChild(headerColumn1);
 
-    headerTitle.className = 'title title--section gutters--double';
+    headerTitle.className = 'title title--dialog gutters--double';
     headerTitle.innerHTML = 'No title was set!';
     headerColumn1.appendChild(headerTitle);
 
@@ -535,7 +547,7 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     containerInner.appendChild(content);
 
     footer.className = 'flo-dialog__footer gutters--double leader-inside--half';
-    footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog 2017. All rights reserved.';
+    footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog ' + (new Date()).getFullYear() + '. All rights reserved.';
     containerInner.appendChild(footer);
 
     return container;
