@@ -1,7 +1,7 @@
 /**
  * FloDialog - Modal dialog script in vanilla JavaScript.
  *
- * @version 03-12-2017
+ * @version 26-02-2018
  * @author Floris Weijenburg <https://github.com/Code-Stars>
  */
 var FloDialog = function (config) {
