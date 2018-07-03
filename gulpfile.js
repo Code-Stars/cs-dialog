@@ -26,6 +26,11 @@ gulp.task('watch', function () {
         liveReload.changed(files);
     });
 
+    // JS files
+    gulp.watch([config.view_path + 'src/*.js']).on("change", function (files) {
+        liveReload.changed(files);
+    });
+
     // PHP files
     gulp.watch(['**/*.php']).on("change", function (files) {
         liveReload.changed(files);

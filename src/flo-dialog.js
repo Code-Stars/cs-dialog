@@ -1,7 +1,7 @@
 /**
  * FloDialog - Modal dialog script in vanilla JavaScript.
  *
- * @version 26-02-2018
+ * @version 03-07-2018
  * @author Floris Weijenburg <https://github.com/Code-Stars>
  */
 var FloDialog = function (config) {
@@ -25,7 +25,7 @@ var FloDialog = function (config) {
             fade: false,
             fall: false
         }
-    }, config);
+    }, config); // @todo wait for content setting
 
     if (this.config.autoBind) {
         this.bindFloDialogLinks();
@@ -122,7 +122,7 @@ FloDialog.prototype.partialHandler = function (target) {
     };
 
     if (attributes.url !== null && attributes.url !== '' && attributes.url !== 'javascript:' && attributes.url !== '#') {
-        this.openUrl(attributes.title, attributes.url, null);
+        this.openUrl(attributes.title, attributes.url);
     }
 };
 
@@ -144,7 +144,7 @@ FloDialog.prototype.hiddenElementHandler = function (target) {
 
         content.appendChild(hiddenContent.firstChild.cloneNode(true));
 
-        this.content = content;
+        this.content = content.innerHTML;
         this.openDialog(attributes.title);
     }
 };
@@ -156,7 +156,6 @@ FloDialog.prototype.hiddenElementHandler = function (target) {
  * @param target {object}
  */
 FloDialog.prototype.imageHandler = function (target) {
-    var content = document.createElement('div');
 
     var attr = {
         title: target.getAttribute('data-title'),
@@ -169,9 +168,7 @@ FloDialog.prototype.imageHandler = function (target) {
         image.src = attr.imageUrl;
         image.className = 'flo-dialog__img';
 
-        content.appendChild(image);
-
-        this.content = content;
+        this.content = image.outerHTML;
         this.openDialog(attr.title);
     }
 };
@@ -181,34 +178,19 @@ FloDialog.prototype.imageHandler = function (target) {
  *
  * @param title {string}
  * @param url {string}
- * @param callback {function}
  */
-FloDialog.prototype.openUrl = function (title, url, callback) {
+FloDialog.prototype.openUrl = function (title, url) {
+    var obj = this;
 
-    var message = document.createElement('span');
-    var content = document.createElement('div');
+    obj.get(url).then(function (response) {
 
-    message.textContent = 'Loading...';
-    content.appendChild(message);
+        obj.content = response;
+        obj.positionDialog();  // Re-position dialog after loading dynamic content.
+        obj.openDialog(title);
 
-    this.get(url, function (response) {
-
-        content.innerHTML = response.data;
-
-        this.waitForElement(content, function () {
-
-            this.content = content;
-
-            // Re-position dialog after loading dynamic content.
-            this.positionDialog();
-            this.openDialog(title);
-
-            if (typeof callback === 'function') {
-                callback();
-            }
-        }.bind(this));
-
-    }.bind(this));
+    }).catch(function (err) {
+        console.error(err);
+    });
 };
 
 /**
@@ -219,13 +201,22 @@ FloDialog.prototype.openUrl = function (title, url, callback) {
  */
 FloDialog.prototype.openDialog = function (title, callback) {
 
+    var obj = this;
+
     this.title = title;
     this.callback = callback || null;
 
-    if (!this.activeDialog) {
-        this.renderDialog();
+    if (!obj.activeDialog) {
+        obj.renderDialog().then(function (dialog) {
+            obj.positionDialog();
+        }).catch(function (error) {
+            console.error(error);
+        });
     } else {
-        this.updateActiveDialog();
+        obj.resetContent();
+        obj.updateActiveDialog().then(function () {
+            obj.positionDialog();
+        });
     }
 };
 
@@ -234,14 +225,27 @@ FloDialog.prototype.openDialog = function (title, callback) {
  */
 FloDialog.prototype.renderDialog = function () {
 
-    var dialog = this.renderContainerHtml(this.content),
-        body = document.getElementsByTagName('body')[0];
+    var dialog = this.renderDialogHtml(),
+        body = document.getElementsByTagName('body')[0],
+        obj = this,
+        delay = 0;
+
+    if (obj.config.debug) {
+        delay = 500;
+    }
 
     body.appendChild(dialog);
 
     this.activeDialog = dialog;
-    this.appendTitle(this.title);
-    this.showDialog();
+
+    return Promise.all(
+        [
+            obj.showDialog(),
+            obj.appendTitle(obj.title),
+            obj.appendContent(obj.content, delay)
+        ]).then(function () {
+        return dialog;
+    });
 };
 
 /**
@@ -249,9 +253,22 @@ FloDialog.prototype.renderDialog = function () {
  */
 FloDialog.prototype.updateActiveDialog = function () {
 
-    this.appendContent(this.content);
-    this.appendTitle(this.title);
-    this.showDialog();
+    var obj = this,
+        delay = 0;
+
+    if (obj.config.debug) {
+        delay = 500;
+    }
+
+    return Promise.all(
+        [
+            this.showDialog(),
+            obj.appendTitle(obj.title),
+            obj.appendContent(obj.content, delay)
+        ]
+    ).then(function () {
+        return obj.activeDialog;
+    });
 };
 
 /**
@@ -260,38 +277,33 @@ FloDialog.prototype.updateActiveDialog = function () {
  */
 FloDialog.prototype.showDialog = function () {
 
-    var dialog = this.activeDialog;
-    var callback = this.callback;
+    var dialog = this.activeDialog,
+        instance = this;
 
-    dialog.className = dialog.className.replace(/\bhide\b/, '');
-    this.openCloak();
-    this.positionDialog();
+    return new Promise(function (resolve, reject) {
 
-    if (!this.config.effect.fade) {
-        if (typeof callback === 'function') {
-            this.runEmbeddedJs();
-            callback();
+        instance.openCloak();
+        instance.positionDialog();
+
+        if (!instance.config.effect.fade) {
+            instance.runEmbeddedJs();
+            resolve();
+        } else {
+            dialog.style.display = 'block';
+
+            instance.fadeIn(dialog, function () {
+                instance.runEmbeddedJs();
+                resolve();
+            });
         }
-
-    } else {
-        dialog.style.display = 'block';
-
-        this.fadeIn(dialog, function () {
-            this.runEmbeddedJs();
-            if (typeof callback === 'function') {
-                callback();
-            }
-        }.bind(this));
-    }
+    });
 };
 
 /**
  * Positions the dialog in the center of the screen.
  * Can be changed via the settings.
- *
- * @param callback
  */
-FloDialog.prototype.positionDialog = function (callback) {
+FloDialog.prototype.positionDialog = function () {
 
     var positionTop = (window.pageYOffset || document.body.scrollTop) - (document.body.clientTop || 0),
         screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
@@ -323,9 +335,6 @@ FloDialog.prototype.positionDialog = function (callback) {
             console.log('maxHeight: ' + maxHeight);
         }
 
-        if (typeof callback === 'function') {
-            callback();
-        }
     }.bind(this));
 };
 
@@ -397,35 +406,63 @@ FloDialog.prototype.closeCloak = function () {
  * @param title {string}
  */
 FloDialog.prototype.appendTitle = function (title) {
+    var obj = this;
 
-    if (typeof this.activeDialog !== 'undefined') {
+    if (typeof obj.activeDialog !== 'undefined') {
 
-        var headerElement = this.activeDialog.getElementsByClassName('flo-dialog__header')[0],
-            titleElement;
+        return new Promise(function (resolve, reject) {
 
-        if (typeof headerElement !== 'undefined') {
-            titleElement = headerElement.getElementsByClassName('title')[0];
-            titleElement.innerHTML = title;
-        }
+            var headerElement = obj.activeDialog.getElementsByClassName('flo-dialog__header')[0],
+                titleElement;
+
+            if (typeof headerElement !== 'undefined') {
+
+                titleElement = headerElement.getElementsByClassName('title')[0];
+                titleElement.innerHTML = title;
+                resolve();
+
+            } else {
+                reject();
+            }
+        });
     }
 };
 
 /**
  * Append content to existing dialog DOM element.
  *
- * @param content {Element}
+ * @param content {string}
+ * @param delay
  */
-FloDialog.prototype.appendContent = function (content) {
+FloDialog.prototype.appendContent = function (content, delay) {
+    delay = delay || 0;
 
-    if (typeof this.activeDialog !== 'undefined') {
+    var obj = this;
 
-        var container = this.activeDialog.getElementsByClassName('flo-dialog__body')[0];
+    if (typeof obj.activeDialog !== 'undefined') {
 
-        if (typeof container !== 'undefined') {
-            container.innerHTML = '';
-            container.appendChild(content);
-        }
+        return new Promise(function (resolve, reject) {
+
+            setTimeout(function () {
+                var container = obj.activeDialog.getElementsByClassName('flo-dialog__body')[0];
+
+                if (typeof container !== 'undefined') {
+                    container.innerHTML = content;
+                    resolve();
+                } else {
+                    reject();
+                }
+            }, delay);
+        });
     }
+};
+
+FloDialog.prototype.resetContent = function () {
+
+    var obj = this;
+
+    var container = obj.activeDialog.getElementsByClassName('flo-dialog__body')[0];
+    container.innerHTML = obj.renderSpinnerHtml();
 };
 
 /**
@@ -451,26 +488,29 @@ FloDialog.prototype.addEvent = function (obj, type, fn) {
  * Performs a GET HTTP-request.
  *
  * @param url {string}
- * @param callback {function}
  */
-FloDialog.prototype.get = function (url, callback) {
+FloDialog.prototype.get = function (url) {
 
-    var xhr = new XMLHttpRequest(),
-        response = {};
+    var requestPromise = new Promise(function (resolve, reject) {
 
-    xhr.open('GET', url);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        var req = new XMLHttpRequest();
+        req.open('GET', url);
+        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            response.data = xhr.responseText;
-            callback(response);
-        } else {
-            console.error('Request failed. Returned status of ' + xhr.status);
-        }
-    };
+        req.onload = function () {
+            if (req.status === 200) {
+                resolve(req.response);
+            } else {
+                reject(Error(req.statusText));
+            }
+        };
 
-    xhr.send();
+        req.send();
+    });
+
+    return Promise.all([requestPromise]).then(function (results) {
+        return results[0];
+    });
 };
 
 /**
@@ -498,14 +538,13 @@ FloDialog.prototype.renderCloakHtml = function () {
  * Render the container HTML used by the dialog.
  * Content gets added later.
  *
- * @param content {Element}
  * @returns {Element}
  */
-FloDialog.prototype.renderContainerHtml = function (content) {
-    content = content || document.createElement('div');
+FloDialog.prototype.renderDialogHtml = function () {
 
     var container = document.createElement('div'),
         containerInner = document.createElement('div'),
+        containerContent = document.createElement('div'),
         header = document.createElement('header'),
         footer = document.createElement('footer');
 
@@ -528,7 +567,6 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     header.appendChild(headerColumn1);
 
     headerTitle.className = 'title title--dialog gutters--double';
-    headerTitle.innerHTML = 'No title was set!';
     headerColumn1.appendChild(headerTitle);
 
     headerColumn2.className = 'container container--slave';
@@ -543,8 +581,9 @@ FloDialog.prototype.renderContainerHtml = function (content) {
     headerColumn2.appendChild(headerCloseBtn);
     this.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this));
 
-    content.className = 'flo-dialog__body gutters--double';
-    containerInner.appendChild(content);
+    containerContent.className = 'flo-dialog__body gutters--double';
+    containerContent.innerHTML = this.renderSpinnerHtml();
+    containerInner.appendChild(containerContent);
 
     footer.className = 'flo-dialog__footer gutters--double leader-inside--half';
     footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog ' + (new Date()).getFullYear() + '. All rights reserved.';
@@ -570,4 +609,15 @@ FloDialog.prototype.runEmbeddedJs = function () {
  */
 FloDialog.prototype.setFooterText = function (text) {
     this.footerText = text;
+};
+
+/**
+ * Load spinner HTML.
+ *
+ * @returns {string}
+ */
+FloDialog.prototype.renderSpinnerHtml = function () {
+    return '<svg class="flo-dialog__spinner" viewBox="0 0 100 100" width="20" height="20"> ' +
+        '<circle cx="50" cy="50" r="42" transform="rotate(-90,50,50)" />' +
+        '</svg>';
 };
