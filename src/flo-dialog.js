@@ -178,15 +178,16 @@ FloDialog.prototype.imageHandler = function (target) {
  *
  * @param title {string}
  * @param url {string}
+ * @param callback {function}
  */
-FloDialog.prototype.openUrl = function (title, url) {
+FloDialog.prototype.openUrl = function (title, url, callback) {
     var obj = this;
 
     obj.get(url).then(function (response) {
 
         obj.content = response;
         obj.positionDialog();  // Re-position dialog after loading dynamic content.
-        obj.openDialog(title);
+        obj.openDialog(title, callback);
 
     }).catch(function (err) {
         console.error(err);
@@ -209,6 +210,10 @@ FloDialog.prototype.openDialog = function (title, callback) {
     if (!obj.activeDialog) {
         obj.renderDialog().then(function (dialog) {
             obj.positionDialog();
+
+            if(typeof callback === 'function')
+                callback();
+
         }).catch(function (error) {
             console.error(error);
         });
