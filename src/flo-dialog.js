@@ -25,11 +25,13 @@ var FloDialog = function (config) {
             fade: false,
             fall: false
         }
-    }, config); // @todo wait for content setting
+    }, config);
 
     if (this.config.autoBind) {
         this.bindFloDialogLinks();
     }
+
+    this.loadPolyFills();
 };
 
 /**
@@ -211,7 +213,7 @@ FloDialog.prototype.openDialog = function (title, callback) {
         obj.renderDialog().then(function (dialog) {
             obj.positionDialog();
 
-            if(typeof callback === 'function')
+            if (typeof callback === 'function')
                 callback();
 
         }).catch(function (error) {
@@ -625,4 +627,30 @@ FloDialog.prototype.renderSpinnerHtml = function () {
     return '<svg class="flo-dialog__spinner" viewBox="0 0 100 100" width="20" height="20"> ' +
         '<circle cx="50" cy="50" r="42" transform="rotate(-90,50,50)" />' +
         '</svg>';
+};
+
+/**
+ * IE: load polyfill for Promise object.
+ */
+FloDialog.loadPolyFills = function () {
+
+    if (!this.isIe()) {
+        var polyfill = document.createElement("script"),
+            head = document.getElementsByTagName('head')[0];
+
+        polyfill.type = 'text/javascript';
+        polyfill.src = 'https://cdn.jsdelivr.net' +
+            '/npm/promise-polyfill@8/dist/polyfill.min.js';
+
+        head.appendChild(polyfill);
+    }
+};
+
+/**
+ * Checks if the current browser is Internet Explorer.
+ * @returns {boolean}
+ */
+FloDialog.prototype.isIe = function () {
+    return window.navigator.userAgent.indexOf("MSIE ") > 0
+        || !!navigator.userAgent.match(/Trident.*rv\:11\./);
 };
