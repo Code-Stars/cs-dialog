@@ -31,7 +31,7 @@ var FloDialog = function (config) {
         this.bindFloDialogLinks();
     }
 
-    this.loadPolyFills();
+    this.domReady(this.loadPolyFills());
 };
 
 /**
@@ -632,9 +632,9 @@ FloDialog.prototype.renderSpinnerHtml = function () {
 /**
  * IE: load polyfill for Promise object.
  */
-FloDialog.loadPolyFills = function () {
+FloDialog.prototype.loadPolyFills = function () {
 
-    if (!this.isIe()) {
+    if (this.isIe()) {
         var polyfill = document.createElement("script"),
             head = document.getElementsByTagName('head')[0];
 
@@ -642,7 +642,7 @@ FloDialog.loadPolyFills = function () {
         polyfill.src = 'https://cdn.jsdelivr.net' +
             '/npm/promise-polyfill@8/dist/polyfill.min.js';
 
-        head.appendChild(polyfill);
+        head.insertBefore(polyfill, head.firstChild);
     }
 };
 
@@ -653,4 +653,22 @@ FloDialog.loadPolyFills = function () {
 FloDialog.prototype.isIe = function () {
     return window.navigator.userAgent.indexOf("MSIE ") > 0
         || !!navigator.userAgent.match(/Trident.*rv\:11\./);
+};
+
+/**
+ * Checks if the DOM is ready.
+ * @param fn {function}
+ */
+FloDialog.prototype.domReady = function (fn) {
+
+    if (document.readyState !== 'loading') {
+        fn();
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', fn);
+    } else {
+        document.attachEvent('onreadystatechange', function () {
+            if (document.readyState !== 'loading')
+                fn();
+        });
+    }
 };
