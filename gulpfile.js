@@ -1,8 +1,7 @@
 'use strict';
 
 var config = {
-    theme_path: './',
-    view_path: ''
+    theme_path: './'
 };
 
 var gulp = require('gulp'),
@@ -22,12 +21,12 @@ gulp.task('watch', function () {
     });
 
     // HTML files
-    gulp.watch([config.view_path + '**/*.html', '**/*.html']).on("change", function (files) {
+    gulp.watch([config.theme_path + '**/*.html', '**/*.html']).on("change", function (files) {
         liveReload.changed(files);
     });
 
     // JS files
-    gulp.watch([config.view_path + 'src/*.js']).on("change", function (files) {
+    gulp.watch([config.theme_path + 'src/*.js']).on("change", function (files) {
         liveReload.changed(files);
     });
 
@@ -43,7 +42,7 @@ gulp.task('compass', function () {
     gulp.src(config.theme_path + 'sass/**/*.scss')
         .pipe(compass({
             debug: false,
-            css: config.theme_path + 'dist/css',
+            css: config.theme_path + 'dist',
             sass: config.theme_path + 'sass',
             sourcemap: false,
             task: 'watch'
@@ -55,18 +54,18 @@ gulp.task('compress', function (cb) {
     // the project for production
     pump([
             gulp.src(['src/*.js']),
-            concat('flo-dialog.js'),
+            concat('cs-dialog.js'),
             uglify(),
             rename({suffix: '.min'}),
-            gulp.dest('dist/js')
+            gulp.dest('dist')
         ]
     );
 
     pump([
-            gulp.src('dist/css/flo-dialog.css'),
+            gulp.src('dist/cs-dialog.css'),
             cleanCSS({compatibility: 'ie8'}),
             rename({suffix: '.min'}),
-            gulp.dest('dist/css')
+            gulp.dest('dist')
         ],
         cb
     );

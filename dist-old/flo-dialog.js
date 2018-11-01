@@ -1,7 +1,7 @@
 /**
  * FloDialog - Modal dialog script in vanilla JavaScript.
  *
- * @version 03-07-2018
+ * @version 01-11-2018
  * @author Floris Weijenburg <https://github.com/Code-Stars>
  */
 var FloDialog = function (config) {
@@ -31,7 +31,7 @@ var FloDialog = function (config) {
         this.bindFloDialogLinks();
     }
 
-    this.domReady(this.loadPolyFills());
+    this.domReady(this.loadPolyFills);
 };
 
 /**
@@ -180,7 +180,7 @@ FloDialog.prototype.imageHandler = function (target) {
  *
  * @param title {string}
  * @param url {string}
- * @param callback {function}
+ * @param callback {function=}
  */
 FloDialog.prototype.openUrl = function (title, url, callback) {
     var obj = this;
@@ -592,9 +592,10 @@ FloDialog.prototype.renderDialogHtml = function () {
     containerContent.innerHTML = this.renderSpinnerHtml();
     containerInner.appendChild(containerContent);
 
-    footer.className = 'flo-dialog__footer gutters--double leader-inside--half';
-    footer.innerHTML = this.footerText !== '' ? this.footerText : '&copy; FloDialog ' + (new Date()).getFullYear() + '. All rights reserved.';
-    containerInner.appendChild(footer);
+    if (this.footerText !== '') {
+        footer.className = 'flo-dialog__footer gutters--double leader-inside--half';
+        containerInner.appendChild(footer);
+    }
 
     return container;
 };
@@ -657,18 +658,10 @@ FloDialog.prototype.isIe = function () {
 
 /**
  * Checks if the DOM is ready.
- * @param fn {function}
+ * @param callback {function}
  */
-FloDialog.prototype.domReady = function (fn) {
-
-    if (document.readyState !== 'loading') {
-        fn();
-    } else if (document.addEventListener) {
-        document.addEventListener('DOMContentLoaded', fn);
-    } else {
-        document.attachEvent('onreadystatechange', function () {
-            if (document.readyState !== 'loading')
-                fn();
-        });
-    }
+FloDialog.prototype.domReady = function (callback) {
+    /in/.test(document.readyState) ? setTimeout(function () {
+        this.domReady(callback.bind(this));
+    }.bind(this), 10) : callback()
 };

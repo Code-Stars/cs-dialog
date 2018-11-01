@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dialog Demo - Content from hidden element ID</title>
+    <title>CodeStars Dialog Demo - Content from hidden element ID</title>
     <link rel="stylesheet" href="css/demo.css"/>
-    <link rel="stylesheet" href="../dist/css/flo-dialog.css"/>
-    <script type="text/javascript" src="../src/flo-dialog.js"></script>
+    <link rel="stylesheet" href="../dist/cs-dialog.css"/>
+    <link rel="stylesheet" href="../dist/cs-dialog.css"/>
+    <script type="text/javascript" src="../src/cs-helpers.js"></script>
+    <script type="text/javascript" src="../src/cs-dialog.js"></script>
+    <!-- production ready minified script -->
+    <!--<script type="text/javascript" src="../dist/cs-dialog.min.js"></script>-->
 </head>
 <body>
 
@@ -14,13 +18,13 @@
     <header class="gutters trailer">
 
         <div class="trailer">
-            <h1>FloDialog - Live demos</h1>
+            <h1>CodeStars &quot;CsDialog&quot; - Live demos</h1>
         </div>
 
         <fieldset>
             <legend>Current settings</legend>
 
-            <div id="flo-dialog-settings"></div>
+            <div id="cs-dialog-settings"></div>
         </fieldset>
 
     </header>
@@ -31,11 +35,11 @@
             <h3>Example 1 - Loading dialog with content from an hidden element</h3>
         </header>
 
-        <div id="flo-dialog-demo-content" style="display: none;">
-            Dialog content from HTML element with ID 'flo-dialog-demo-content'.
+        <div id="cs-dialog-demo-content" style="display: none;">
+            Dialog content from HTML element with ID 'cs-dialog-demo-content'.
         </div>
 
-        <button data-flo-dialog="hidden-element" data-id="flo-dialog-demo-content" data-title="Demo Dialog" data-type="hidden-element">
+        <button data-cs-dialog="hidden-element" data-id="cs-dialog-demo-content" data-title="Demo Dialog" data-type="hidden-element">
             Open Demo Dialog from hidden element
         </button>
 
@@ -47,7 +51,7 @@
             <h3>Example 2 - Loading dialog with an image as the content</h3>
         </header>
 
-        <a data-flo-dialog="image" data-title="Dialog Demo - Content image" data-image-url="./images/templo-del-loto.jpg" href="javascript:;">
+        <a data-cs-dialog="image" data-title="Dialog Demo - Content image" data-image-url="./images/templo-del-loto.jpg" href="javascript:;">
             <figure>
                 <img style="width: 300px;" src="./images/templo-del-loto.jpg" alt="Example image"/>
             </figure>
@@ -61,7 +65,7 @@
             <h3>Example 3 - Loading dialog with content from a URL</h3>
         </header>
 
-        <button data-flo-dialog="partial" data-title="Demo Dialog" data-url="./partials/demo-content-partial.html">
+        <button data-cs-dialog="partial" data-title="Demo Dialog" data-url="./partials/demo-content-partial.html">
             Open Demo Dialog from URL
         </button>
 
@@ -71,7 +75,7 @@
 
 <script type="text/javascript">
     /**
-     * This is how we set up the FloDialog.
+     * This is how we set up the CsDialog.
      */
     var App = {
         Dialog: null // make it accessible for the entire app
@@ -79,7 +83,7 @@
 
     (function () { // DOM ready
 
-        App.Dialog = new FloDialog({
+        App.Dialog = new CsDialog({
             debug: true, // enable debug mode to view console log messages
             autoBind: true, // will automatically bind all the flo-dialog links on the page to their associated event handler
             cache: true, // do not remove dialog from HTML, but use the already generated version
@@ -90,7 +94,7 @@
             position: 'fixed' // will make the dialog move along with the screen
         });
 
-        App.Dialog.setFooterText('&copy; FloDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
+        //App.Dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
 
         setTimeout(function() {
 
@@ -98,6 +102,8 @@
             App.Dialog.openUrl('Programmatically opened dialog!','./partials/demo-content-partial.html');
 
         }, 1000);
+
+        App.Dialog.openWithContent('CsDialog with content', '<div><h3>This is the content.</h3></div>');
     })();
 </script>
 
@@ -106,7 +112,7 @@
         /**
          * Print demo config on page.
          */
-        d.getElementById('flo-dialog-settings').innerHTML = '<pre>' + JSON.stringify(App.Dialog.config, null, "\t") + '</pre>';
+        d.getElementById('cs-dialog-settings').innerHTML = '<pre>' + JSON.stringify(App.Dialog.config, null, "\t") + '</pre>';
     })(document);
 </script>
 

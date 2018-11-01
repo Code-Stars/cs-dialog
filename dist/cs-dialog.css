@@ -225,7 +225,7 @@
   margin-bottom: 1.5em;
 }
 
-.flo-dialog {
+.cs-dialog {
   position: absolute;
   left: 0;
   top: 0;
@@ -234,47 +234,47 @@
   height: auto;
   margin: 0 12px;
 }
-.flo-dialog__inner {
+.cs-dialog__inner {
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
   width: 100%;
 }
 @media only screen and (min-width: 801px) {
-  .flo-dialog {
+  .cs-dialog {
     padding-left: 0;
     padding-right: 0;
     width: 50%;
     margin: 0 auto;
   }
 }
-.flo-dialog__header {
+.cs-dialog__header {
   height: 3em;
   line-height: 3em;
   background-color: #fff;
 }
-.flo-dialog__body {
+.cs-dialog__body {
   position: relative;
   background-color: #fff;
   line-height: normal;
   padding-bottom: 1.5em;
 }
-.flo-dialog__img {
+.cs-dialog__img {
   width: 100%;
 }
-.flo-dialog__footer {
+.cs-dialog__footer {
   text-align: center;
   background-color: #fff;
   height: 3em;
   line-height: 3em;
   font-size: 12px;
 }
-.flo-dialog__close-btn {
+.cs-dialog__close-btn {
   text-decoration: none;
 }
-.flo-dialog.hide {
+.cs-dialog.hide {
   display: block;
   opacity: 0;
 }
-.flo-dialog__spinner circle {
+.cs-dialog__spinner circle {
   fill: none;
   stroke: slategray;
   stroke-width: 16;
@@ -294,7 +294,7 @@
     stroke-dashoffset: -264;
   }
 }
-.flo-dialog-cloak {
+.cs-dialog-cloak {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -302,15 +302,15 @@
   z-index: 9;
   cursor: pointer;
 }
-.flo-dialog-cloak--main-menu {
+.cs-dialog-cloak--main-menu {
   display: block;
 }
-.flo-dialog-cloak.hide {
+.cs-dialog-cloak.hide {
   display: none;
 }
 
 @media only screen and (min-width: 801px) {
-  .flo-dialog-cloak--main-menu {
+  .cs-dialog-cloak--main-menu {
     display: none;
   }
 }

@@ -1,4 +1,4 @@
-.flo-dialog-cloak {
+.cs-dialog-cloak {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -17,7 +17,7 @@
 
 @include breakpoint($gt-medium) {
 
-  .flo-dialog-cloak {
+  .cs-dialog-cloak {
     &--main-menu {
       display: none;
     }

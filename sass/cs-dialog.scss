@@ -1,12 +1,12 @@
-// import dependencies
+// dependencies
 @import "compass";
 @import "utilities/piecss";
 
-// import settings
+// settings
 @import "settings/breakpoints";
 @import "settings/container";
 @import "settings/layout";
 
-// import FloDialog core
-@import "core/flo-dialog";
-@import "core/flo-dialog-cloak";
+// modules
+@import "modules/cs-dialog";
+@import "modules/cs-dialog-cloak";
