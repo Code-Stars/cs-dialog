@@ -523,5 +523,7 @@ CsDialog.prototype.renderSpinnerHtml = function () {
  * @param {string} content
  */
 CsDialog.prototype.openWithContent = function (title, content) {
-
+    this.openDialog(title, function () {
+        this.appendContent(content);
+    }.bind(this));
 };
