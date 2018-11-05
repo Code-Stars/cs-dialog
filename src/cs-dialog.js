@@ -475,7 +475,7 @@ CsDialog.prototype.renderDialogHtml = function () {
     headerColumn2.style.textAlign = 'right';
     header.appendChild(headerColumn2);
 
-    headerCloseIcon.className = 'fa fa-times';
+    headerCloseIcon.className = 'fas fa-times';
     headerCloseBtn.appendChild(headerCloseIcon);
 
     headerCloseBtn.href = 'JavaScript:;';
