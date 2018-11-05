@@ -1,11 +1,9 @@
 // dependencies
 @import "compass";
-@import "utilities/piecss";
+@import "utilities/mixins";
 
 // settings
 @import "settings/breakpoints";
-@import "settings/container";
-@import "settings/layout";
 
 // modules
 @import "modules/cs-dialog";

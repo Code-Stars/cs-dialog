@@ -1,5 +1,4 @@
 .cs-dialog {
-
   position: absolute;
   left: 0;
   top: 0;
@@ -8,16 +7,14 @@
   height: auto;
   margin: 0 12px;
 
+  &__title {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
   &__inner {
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 100%;
-  }
-
-  @include breakpoint($gt-medium) {
-    padding-left: 0;
-    padding-right: 0;
-    width: 50%;
-    margin: 0 auto;
   }
 
   &__header {
@@ -30,7 +27,11 @@
     position: relative;
     background-color: #fff;
     line-height: normal;
-    padding-bottom: rhythm(1);
+    padding: 24px;
+
+    img {
+      display: block;
+    }
   }
 
   &__img {
@@ -43,16 +44,31 @@
     height: rhythm(2);
     line-height: rhythm(2);
     font-size: 12px;
-
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   &__close-btn {
     text-decoration: none;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   &.hide {
     display: block;
     opacity: 0;
+  }
+
+  &__container-master {
+    display: inline-block;
+    width: 77.77778%;
+    vertical-align: top;
+  }
+
+  &__container-slave {
+    display: inline-block;
+    width: 22.22222%;
+    vertical-align: top;
   }
 
   &__spinner {
@@ -79,4 +95,16 @@
       stroke-dashoffset: -264;
     }
   }
+}
+
+@include breakpoint($gt-medium) {
+
+  .cs-dialog {
+    padding-left: 0;
+    padding-right: 0;
+    width: 75%;
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
 }

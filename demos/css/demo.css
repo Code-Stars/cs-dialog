@@ -7,6 +7,11 @@ h1, h2, h3 {
     font-family: Arial, sans-serif;
 }
 
+h1 {
+    font-size: 32px;
+    margin-bottom: 24px;
+}
+
 h3 {
     font-size: 18px;
     font-weight: lighter;
@@ -31,6 +36,8 @@ button {
     width: 250px;
     height: 30px;
     line-height: 30px;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 fieldset {
@@ -43,4 +50,8 @@ fieldset span {
 
 legend {
     font-weight: bold;
+}
+
+section {
+    padding: 24px;
 }

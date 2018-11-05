@@ -1,0 +1,33 @@
+///
+/// Expects a valid breakpoint expression like (min-width: 30em)
+/// A collection of pre-defined breakpoints are defined in [settings/breakpoints](*). Override and add breakpoints in your project's settings file.
+///
+/// @example scss
+///  $small_handheld: "(max-width: #{to-unit(480px,1em,16px)})";
+///  @include breakpoint($small_handheld);
+///
+/// @access public
+/// @since 0.1
+///
+/// @param {String} $breakpoints - A valid breakpoint
+/// @param {Map} $media - The media to which this breakpoint applies
+///
+@mixin breakpoint($breakpoints, $media: "only screen") {
+  $breakpoints: unquote($breakpoints);
+
+  $query: ();
+  @if list-separator($breakpoints)=="comma" {
+    @each $breakpoint in $breakpoints {
+      $breakpoint: unquote($breakpoint);
+      $query: append($query, $breakpoint, comma);
+    }
+  } @else {
+    $query: append($query, $breakpoints, comma);
+  }
+
+  $q: "#{$media} and #{$query}";
+
+  @media #{$q} {
+    @content;
+  }
+}

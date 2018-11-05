@@ -364,7 +364,7 @@ CsDialog.prototype.appendTitle = function (title) {
 
             if (typeof headerElement !== 'undefined') {
 
-                titleElement = headerElement.getElementsByClassName('title')[0];
+                titleElement = headerElement.getElementsByClassName('cs-dialog__title')[0];
                 titleElement.innerHTML = title;
                 resolve();
 
@@ -465,13 +465,13 @@ CsDialog.prototype.renderDialogHtml = function () {
     header.className = 'cs-dialog__header trailer--half';
     containerInner.appendChild(header);
 
-    headerColumn1.className = 'container container--master';
+    headerColumn1.className = 'cs-dialog__container-master';
     header.appendChild(headerColumn1);
 
-    headerTitle.className = 'title title--dialog gutters--double';
+    headerTitle.className = 'cs-dialog__title';
     headerColumn1.appendChild(headerTitle);
 
-    headerColumn2.className = 'container container--slave';
+    headerColumn2.className = 'cs-dialog__container-slave';
     headerColumn2.style.textAlign = 'right';
     header.appendChild(headerColumn2);
 
@@ -479,17 +479,18 @@ CsDialog.prototype.renderDialogHtml = function () {
     headerCloseBtn.appendChild(headerCloseIcon);
 
     headerCloseBtn.href = 'JavaScript:;';
-    headerCloseBtn.className = 'cs-dialog__close-btn gutters--double';
+    headerCloseBtn.className = 'cs-dialog__close-btn';
     headerColumn2.appendChild(headerCloseBtn);
 
     CsUtils.addEvent(headerCloseBtn, 'click', this.closeDialog.bind(this));
 
-    containerContent.className = 'cs-dialog__body gutters--double';
+    containerContent.className = 'cs-dialog__body';
     containerContent.innerHTML = this.renderSpinnerHtml();
     containerInner.appendChild(containerContent);
 
     if (this.footerText !== '') {
-        footer.className = 'cs-dialog__footer gutters--double leader-inside--half';
+        footer.className = 'cs-dialog__footer leader-inside--half';
+        footer.innerHTML = this.footerText;
         containerInner.appendChild(footer);
     }
 
