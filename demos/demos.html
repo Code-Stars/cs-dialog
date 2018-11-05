@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CodeStars Dialog Demo - Content from hidden element ID</title>
+    <title>CodeStars Dialog Demos</title>
     <link rel="stylesheet" href="css/demo.css"/>
     <link rel="stylesheet" href="../dist/cs-dialog.css"/>
     <link rel="stylesheet" href="../dist/cs-dialog.css"/>
@@ -15,21 +15,20 @@
 
 <article class="leader-inside">
 
-    <header class="gutters trailer">
+    <section>
 
         <div class="trailer">
             <h1>CodeStars &quot;CsDialog&quot; - Live demos</h1>
         </div>
 
         <fieldset>
-            <legend>Current settings</legend>
-
+            <legend>Default CsDsettings</legend>
             <div id="cs-dialog-settings"></div>
         </fieldset>
 
-    </header>
+    </section>
 
-    <section class="gutters trailer">
+    <section>
 
         <header class="trailer">
             <h3>Example 1 - Loading dialog with content from an hidden element</h3>
@@ -45,7 +44,7 @@
 
     </section>
 
-    <section class="gutters trailer">
+    <section>
 
         <header class="trailer">
             <h3>Example 2 - Loading dialog with an image as the content</h3>
@@ -59,7 +58,7 @@
 
     </section>
 
-    <section class="gutters trailer">
+    <section>
 
         <header class="trailer">
             <h3>Example 3 - Loading dialog with content from a URL</h3>
@@ -68,6 +67,15 @@
         <button data-cs-dialog="partial" data-title="Demo Dialog" data-url="./partials/demo-content-partial.html">
             Open Demo Dialog from URL
         </button>
+
+    </section>
+
+    <section>
+
+        <fieldset>
+            <legend>Demo example JavaScript</legend>
+            <div id="cs-dialog-javascript"></div>
+        </fieldset>
 
     </section>
 
@@ -89,12 +97,12 @@
             cache: true, // do not remove dialog from HTML, but use the already generated version
             effect: {
                 fade: true, // will make the dialog fade-in instead of appearing at once
-                fall: true // will make the dialog 'fall out of the sky' when appearing
+                fall: false // will make the dialog 'fall out of the sky' when appearing
             },
             position: 'fixed' // will make the dialog move along with the screen
         });
 
-        //App.Dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
+        App.Dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
 
         setTimeout(function() {
 
@@ -113,6 +121,8 @@
          * Print demo config on page.
          */
         d.getElementById('cs-dialog-settings').innerHTML = '<pre>' + JSON.stringify(App.Dialog.config, null, "\t") + '</pre>';
+        var demoJs = document.getElementsByTagName('script')[2].innerHTML;
+        d.getElementById('cs-dialog-javascript').innerHTML = '<pre>' + String(demoJs).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '</pre>';
     })(document);
 </script>
 
