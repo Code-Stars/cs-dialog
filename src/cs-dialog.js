@@ -457,12 +457,12 @@ CsDialog.prototype.renderDialogHtml = function () {
         headerCloseIcon = document.createElement('i');
 
     container.id = 'cs-dialog-' + this.id;
-    container.className = 'cs-dialog hide';
+    container.className = 'cs-dialog extend hide';
 
     containerInner.className = 'cs-dialog__inner';
     container.appendChild(containerInner);
 
-    header.className = 'cs-dialog__header trailer--half';
+    header.className = 'cs-dialog__header';
     containerInner.appendChild(header);
 
     headerColumn1.className = 'cs-dialog__container-master';
@@ -489,7 +489,7 @@ CsDialog.prototype.renderDialogHtml = function () {
     containerInner.appendChild(containerContent);
 
     if (this.footerText !== '') {
-        footer.className = 'cs-dialog__footer leader-inside--half';
+        footer.className = 'cs-dialog__footer';
         footer.innerHTML = this.footerText;
         containerInner.appendChild(footer);
     }
