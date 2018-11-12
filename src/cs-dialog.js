@@ -29,8 +29,6 @@ var CsDialog = function (config) {
     if (this.config.autoBind) {
         this.crawlDialogLinks();
     }
-
-    CsUtils.isDomReady(CsUtils.loadPolyFills);
 };
 
 /**
@@ -156,13 +154,19 @@ CsDialog.prototype.openUrl = function (title, url, callback) {
  */
 CsDialog.prototype.openDialog = function (title, callback) {
 
-    var obj = this;
-
+    var self = this;
     this.title = title;
 
-    if (!obj.activeDialog) {
-        obj.renderDialog().then(function (dialog) {
-            obj.positionDialog();
+    if (typeof Promise === 'undefined') {
+        CsUtils.waitForPolyfillsToLoad(function () {
+            self.openDialog(title, callback);
+        });
+        return;
+    }
+
+    if (!self.activeDialog) {
+        self.renderDialog().then(function (dialog) {
+            self.positionDialog();
 
             if (typeof callback === 'function')
                 callback();
@@ -171,13 +175,13 @@ CsDialog.prototype.openDialog = function (title, callback) {
             console.error(error);
         });
     } else {
-        obj.resetContent();
-        obj.updateActiveDialog().then(function () {
-            obj.positionDialog();
+        self.resetContent();
+        self.updateActiveDialog().then(function () {
+            self.positionDialog();
 
-            if (typeof callback === 'function')
+            if (typeof callback === 'function') {
                 callback();
-
+            }
         });
     }
 };

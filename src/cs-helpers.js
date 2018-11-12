@@ -5,6 +5,7 @@ var CsUtils = {};
 
 /**
  * Checks if the current browser is Internet Explorer.
+ *
  * @returns {boolean}
  */
 CsUtils.isIe = function () {
@@ -14,6 +15,7 @@ CsUtils.isIe = function () {
 
 /**
  * Checks if the DOM is ready.
+ *
  * @param callback {function}
  */
 CsUtils.isDomReady = function (callback) {
@@ -23,18 +25,41 @@ CsUtils.isDomReady = function (callback) {
 };
 
 /**
- * Load polyfill if Promise object is not supported.
+ * Load polyfill if Promise object is not supported
+ * as soon as the head tag is loaded.
  */
 CsUtils.loadPolyFills = function () {
+    if (typeof Promise === 'undefined' && document.getElementById('script-promise-polyfill') === null) {
+
+        CsUtils.waitForElement(document.getElementsByTagName('head')[0], function (head) {
+            var script = document.createElement("script");
+
+            script.type = 'text/javascript';
+            script.src = 'https://cdn.jsdelivr.net' +
+                '/npm/promise-polyfill@8/dist/polyfill.min.js';
+            script.id = 'script-promise-polyfill';
+
+            head.insertBefore(script, head.firstChild);
+        });
+    }
+};
+
+/**
+ * Wait for poly fill to load.
+ *
+ * @param callback {function}
+ */
+CsUtils.waitForPolyfillsToLoad = function (callback) {
     if (typeof Promise === 'undefined') {
-        var polyfill = document.createElement("script"),
-            head = document.getElementsByTagName('head')[0];
+        CsUtils.loadPolyFills();
+        console.info('Waiting for Promise polyfill to load...');
 
-        polyfill.type = 'text/javascript';
-        polyfill.src = 'https://cdn.jsdelivr.net' +
-            '/npm/promise-polyfill@8/dist/polyfill.min.js';
+        setTimeout(function () {
+            CsUtils.waitForPolyfillsToLoad(callback);
+        }.bind(this), 50);
 
-        head.insertBefore(polyfill, head.firstChild);
+    } else {
+        callback();
     }
 };
 
@@ -96,7 +121,7 @@ CsUtils.waitForElement = function (element, callback) {
     var ticks = setInterval(function () {
         if (element) {
             clearInterval(ticks);
-            callback();
+            callback(element);
         }
     }, 10);
 };
