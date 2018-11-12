@@ -23,11 +23,11 @@ CsUtils.isDomReady = function (callback) {
 };
 
 /**
- * IE: load polyfill for Promise object.
+ * Load polyfill if Promise object is not supported.
  */
 CsUtils.loadPolyFills = function () {
-
-    if (CsUtils.isIe()) {
+    if (typeof Promise === "undefined" &&
+        Promise.toString().indexOf("[native code]") === -1) {
         var polyfill = document.createElement("script"),
             head = document.getElementsByTagName('head')[0];
 
