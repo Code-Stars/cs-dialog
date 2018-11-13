@@ -526,9 +526,14 @@ CsDialog.prototype.renderSpinnerHtml = function () {
  *
  * @param {string} title
  * @param {string} content
+ * @param {function=} callback
  */
-CsDialog.prototype.openWithContent = function (title, content) {
+CsDialog.prototype.openWithContent = function (title, content, callback) {
     this.openDialog(title, function () {
-        this.appendContent(content);
+        this.appendContent(content).then(function (response) {
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
     }.bind(this));
 };
