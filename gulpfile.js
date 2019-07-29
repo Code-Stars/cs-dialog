@@ -55,8 +55,9 @@ gulp.task('compress', function (cb) {
     pump([
             gulp.src(['src/*.js']),
             concat('cs-dialog.js'),
+            gulp.dest('dist'),
             uglify(),
-            rename({suffix: '.min'}),
+            rename({suffix: '.min', basename: 'cs-dialog'}),
             gulp.dest('dist')
         ]
     );
