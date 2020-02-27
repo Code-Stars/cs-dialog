@@ -1,7 +1,7 @@
 /**
  * CsDialog - Modal dialog script in vanilla JavaScript.
  *
- * @version 01-11-2018
+ * @version 27-02-2020
  * @author Floris Weijenburg <https://github.com/Code-Stars>
  */
 var CsDialog = function (config) {
@@ -55,6 +55,9 @@ CsDialog.prototype.crawlDialogLinks = function () {
                     break;
                 case 'image':
                     this.imageHandler(target);
+                    break;
+                case 'gallery':
+                    this.galleryHandler(target);
                     break;
             }
 
@@ -126,6 +129,105 @@ CsDialog.prototype.imageHandler = function (target) {
 };
 
 /**
+ * Handles the 'gallery' type dialogs.
+ * By loading its content from an image src path.
+ *
+ * @param target {object}
+ */
+CsDialog.prototype.galleryHandler = function (target) {
+
+    var attr = {
+        title: target.getAttribute('data-cs-title'),
+        imageUrl: target.getAttribute('data-cs-image-url'),
+        index: parseInt(target.getAttribute('data-cs-index'))
+    };
+
+    if (attr.imageUrl !== null) {
+        var image = document.createElement('img');
+
+        image.src = attr.imageUrl;
+        image.className = 'cs-dialog__img';
+
+        var container = document.createElement('div');
+        container.appendChild(image);
+
+        // get gallery items
+        var gallery_items = document.querySelectorAll('[data-cs-dialog="gallery"]');
+        if (gallery_items.length > 1) {
+
+            if (attr.index < gallery_items.length) {
+
+                // add next btn
+                var nextBtn = document.createElement('a');
+                nextBtn.href = 'javascript:;';
+                nextBtn.className = 'cs-dialog__nav cs-dialog__nav--next';
+                nextBtn.setAttribute('data-cs-index', (attr.index + 1).toString());
+
+                var nextIcon = document.createElement('i');
+                nextIcon.className = 'fas fa-angle-right';
+                nextBtn.appendChild(nextIcon);
+
+                CsUtils.addEvent(nextBtn, 'click', function (event) {
+                    this.switchImageHandler(event);
+                }.bind(this));
+                container.appendChild(nextBtn);
+            }
+
+            if (attr.index > 1) {
+
+                // add previous btn
+                var prevBtn = document.createElement('a');
+                prevBtn.href = 'javascript:;';
+                prevBtn.className = 'cs-dialog__nav cs-dialog__nav--previous';
+                prevBtn.setAttribute('data-cs-index', (attr.index - 1).toString());
+
+                var prevIcon = document.createElement('i');
+                prevIcon.className = 'fas fa-angle-left';
+                prevBtn.appendChild(prevIcon);
+
+                CsUtils.addEvent(prevBtn, 'click', function (event) {
+                    this.switchImageHandler(event);
+                }.bind(this));
+                container.appendChild(prevBtn);
+            }
+        }
+
+        this.content = container;
+
+        this.openDialog(attr.title);
+    }
+};
+
+/**
+ * Switch image handler.
+ *
+ * We only fade once to open dialog, not when switching image.
+ *
+ * @param event
+ */
+CsDialog.prototype.switchImageHandler = function (event) {
+
+    var target = (event.currentTarget) ? event.currentTarget : event.srcElement,
+        target_index = target.getAttribute('data-cs-index'),
+        next_element = null,
+        gallery_items = document.querySelectorAll('[data-cs-dialog="gallery"]');
+
+    for (var i = 0; i < gallery_items.length; i++) {
+        var index = gallery_items[i].getAttribute('data-cs-index');
+        if (target_index === index) {
+            next_element = gallery_items[i];
+        }
+    }
+
+    if (next_element !== null) {
+        var cached_fade = this.config.effect.fade;
+        this.config.effect.fade = false;
+        this.galleryHandler(next_element);
+        this.config.effect.fade = cached_fade;
+    }
+};
+
+/**
  * Loads content or URL into a dialog.
  *
  * @param title {string}
@@ -138,7 +240,8 @@ CsDialog.prototype.openUrl = function (title, url, callback) {
     CsUtils.get(url).then(function (response) {
 
         self.content = response;
-        self.positionDialog();  // Re-position dialog after loading dynamic content.
+        // Re-position dialog after loading dynamic content.
+        self.positionDialog();
         self.openDialog(title, callback);
 
     }).catch(function (err) {
@@ -251,14 +354,20 @@ CsDialog.prototype.showDialog = function () {
         self.openCloak();
         self.positionDialog();
 
+        dialog.style.display = 'block';
+
         if (!self.config.effect.fade) {
-            CsUtils.runEmbeddedJs();
+
+            CsUtils.runEmbeddedJs(dialog);
+            dialog.style.opacity = '1';
+
             resolve();
         } else {
-            dialog.style.display = 'block';
-
+            // settings: fade
             CsUtils.fadeIn(dialog, function () {
-                CsUtils.runEmbeddedJs(self.activeDialog);
+
+                CsUtils.runEmbeddedJs(dialog);
+
                 resolve();
             });
         }
@@ -313,12 +422,12 @@ CsDialog.prototype.closeDialog = function () {
 
     if (typeof dialog !== 'undefined') {
 
-        if (this.config.effect.fade) {
-            this.activeDialog.style.display = 'none';
-        }
+        this.activeDialog.style.display = 'none';
 
         if (!this.config.cache) {
+
             dialog.parentNode.removeChild(dialog);
+
             this.activeDialog = null;
         }
         this.closeCloak();
@@ -398,7 +507,12 @@ CsDialog.prototype.appendContent = function (content, delay) {
                 var container = obj.activeDialog.getElementsByClassName('cs-dialog__body')[0];
 
                 if (typeof container !== 'undefined') {
-                    container.innerHTML = content;
+                    if (typeof content === 'object') {
+                        container.innerHTML = '';
+                        container.append(content);
+                    } else {
+                        container.innerHTML = content;
+                    }
                     resolve();
                 } else {
                     reject();
@@ -415,7 +529,7 @@ CsDialog.prototype.resetContent = function () {
 
     var obj = this;
 
-    var container = obj.activeDialog.getElementsByClassName('cs-dialog__body')[0];
+    var container = obj.activeDialog.getElementsByClassName('cs-dialog__body')[0]
     container.innerHTML = obj.renderSpinnerHtml();
 };
 
@@ -516,7 +630,7 @@ CsDialog.prototype.setFooterText = function (text) {
  * @returns {string}
  */
 CsDialog.prototype.renderSpinnerHtml = function () {
-    return '<svg class="cs-dialog__spinner" viewBox="0 0 100 100" width="20" height="20"> ' +
+    return '<svg class="cs-dialog__spinner" viewBox="0 0 100 100" width="50" height="50"> ' +
         '<circle cx="50" cy="50" r="42" transform="rotate(-90,50,50)" />' +
         '</svg>';
 };
@@ -719,8 +833,12 @@ CsUtils.mergeOptions = function (obj1, obj2) {
  * @param {Element} container
  */
 CsUtils.runEmbeddedJs = function (container) {
-    var scripts = container.getElementsByTagName('script');
-    for (var i = 0; i < scripts.length; i++) {
-        eval(scripts[i].text);
+    if (typeof container !== 'undefined') {
+
+        var scripts = container.getElementsByTagName('script');
+
+        for (var i = 0; i < scripts.length; i++) {
+            eval(scripts[i].text);
+        }
     }
 };

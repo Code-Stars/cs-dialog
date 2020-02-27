@@ -23,6 +23,11 @@ html, body {
     color: #222;
 }
 
+a {
+    display: inline-block;
+    text-decoration: none;
+}
+
 p {
     margin: 10px 0;
 }
@@ -54,4 +59,18 @@ legend {
 
 section {
     padding: 24px;
+}
+
+.list {
+}
+
+.list li {
+    display: block;
+    width: 100%;
+}
+
+.thumb {
+    width: 150px;
+    height: auto;
+    margin: 10px;
 }

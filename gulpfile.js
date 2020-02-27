@@ -1,76 +1,98 @@
 'use strict';
 
-var config = {
-    theme_path: './'
+const config = {
+    image_path: './images/',
+    js_path: './',
+    css_path: './',
+    sass_path: './sass/',
+    es6_path: './src/',
+    vendor_path: './vendor/',
+    clean_app: true
 };
 
-var gulp = require('gulp'),
-    liveReload = require('gulp-livereload'),
-    compass = require('gulp-compass'),
-    uglify = require('gulp-uglify'),
+const gulp = require('gulp'),
+    sass = require('gulp-sass'),
+    livereload = require('gulp-livereload'),
+    cleanCSS = require('gulp-clean-css'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
-    pump = require('pump'),
-    cleanCSS = require('gulp-clean-css');
+    uglify = require('gulp-uglify'),
+    clean = require('gulp-clean'),
+    notify = require("gulp-notify"),
+    sourcemaps = require('gulp-sourcemaps'),
+    path = require('path'),
+    imagemin = require('gulp-imagemin'),
+    file = require('gulp-file');
+
+// output current build version
+function deploy_version(dist_path) {
+    var uniqueVersion = Date.now() + ( (Math.random() * 100000).toFixed());
+
+    return file('version.txt', uniqueVersion.toString())
+        .pipe(gulp.dest(dist_path));
+}
 
 gulp.task('watch', function () {
 
-    // CSS files
-    gulp.watch([config.theme_path + 'css/**/*.css']).on("change", function (files) {
-        liveReload.changed(files);
-    });
+    livereload.listen();
 
-    // HTML files
-    gulp.watch([config.theme_path + '**/*.html', '**/*.html']).on("change", function (files) {
-        liveReload.changed(files);
-    });
+    // SASS files
+    gulp.watch(config.sass_path + '**/*.scss', gulp.series('watch-sass'));
 
     // JS files
-    gulp.watch([config.theme_path + 'src/*.js']).on("change", function (files) {
-        liveReload.changed(files);
-    });
+    gulp.watch(config.es6_path + '**/**/*.js', gulp.series('watch-js'));
 
-    // PHP files
-    gulp.watch(['**/*.php']).on("change", function (files) {
-        liveReload.changed(files);
+    // HTML files
+    gulp.watch('./**/*.html').on('change', function (files) {
+        livereload.changed(files);
     });
 });
 
-gulp.task('compass', function () {
-    liveReload.listen();
-
-    gulp.src(config.theme_path + 'sass/**/*.scss')
-        .pipe(compass({
-            debug: false,
-            css: config.theme_path + 'dist',
-            sass: config.theme_path + 'sass',
-            sourcemap: false,
-            task: 'watch'
-        }));
+// build cs-dialog.css
+gulp.task('watch-sass', function () {
+    return gulp.src(config.sass_path + '**/*.scss')
+        .pipe(sourcemaps.init())
+        .pipe(sass().on('error', sass.logError))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(config.css_path + 'dist/'))
+        .pipe(livereload());
 });
 
-gulp.task('compress', function (cb) {
-    // here we are going to build
-    // the project for production
-    pump([
-            gulp.src(['src/*.js']),
-            concat('cs-dialog.js'),
-            gulp.dest('dist'),
-            uglify(),
-            rename({suffix: '.min', basename: 'cs-dialog'}),
-            gulp.dest('dist')
-        ]
-    );
+// build cs-dialog.min.css
+gulp.task('build-custom-css', function () {
 
-    pump([
-            gulp.src('dist/cs-dialog.css'),
-            cleanCSS({compatibility: 'ie8'}),
-            rename({suffix: '.min'}),
-            gulp.dest('dist')
-        ],
-        cb
-    );
+    deploy_version('dist/');
+
+    return gulp.src(config.css_path + 'dist/cs-dialog.css')
+        .pipe(cleanCSS({compatibility: 'ie8', level: {1: {specialComments: 0}}}))
+        .pipe(rename({suffix: '.min', basename: 'cs-dialog'}))
+        .pipe(gulp.dest(config.css_path + 'dist'))
+        .pipe(notify("Custom CSS was built"));
 });
 
-gulp.task('default', ['compass', 'watch']);
-gulp.task('build', ['compress']);
+// build cs-dialog.js
+gulp.task('watch-js', function () {
+
+    return gulp.src([
+        config.es6_path + '/cs-dialog.js',
+        config.es6_path + '/cs-utils.js'
+    ])
+        .pipe(concat('cs-dialog.js'))
+        .pipe(gulp.dest(config.js_path + 'dist/'))
+        .pipe(livereload());
+});
+
+// build cs-dialog.min.js
+gulp.task('build-custom-script', function () {
+
+    deploy_version('dist/');
+
+    return gulp.src([config.js_path + 'dist/cs-dialog.js'])
+        .pipe(uglify())
+        .pipe(rename({suffix: '.min', basename: 'cs-dialog'}))
+        .pipe(gulp.dest('dist'))
+        .pipe(notify("Custom js built for production"));
+});
+
+gulp.task('default', gulp.parallel('watch'));
+gulp.task('build', gulp.series(['build-custom-css', 'build-custom-script']));

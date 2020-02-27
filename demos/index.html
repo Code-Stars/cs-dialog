@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeStars Dialog Demos - Hidden element</title>
+    <link rel="stylesheet" href="demos.css"/>
+    <link rel="stylesheet" href="../dist/cs-dialog.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
+
+    <!-- dist -->
+    <script type="text/javascript" src="../dist/cs-dialog.js"></script>
+
+    <!-- src -->
+    <!--<script type="text/javascript" src="../../src/cs-utils.js"></script>-->
+    <!--<script type="text/javascript" src="../../src/cs-dialog.js"></script>-->
+</head>
+<body>
+
+<article class="leader-inside">
+
+    <section>
+
+        <div class="trailer">
+            <h1>CodeStars &quot;CsDialog&quot; - Live demos</h1>
+        </div>
+
+        <fieldset>
+            <legend>Default CsDialog settings</legend>
+            <div id="cs-dialog-settings"></div>
+        </fieldset>
+
+    </section>
+
+    <section>
+
+        <fieldset>
+            <legend>Examples</legend>
+            <ul class="list">
+                <li>
+                    <a href="./content/hidden-element.html">Content hidden element</a>
+                </li>
+                <li>
+                    <a href="./content/string.html">Content string</a>
+                </li>
+                <li>
+                    <a href="./image/index.html">Image</a>
+                </li>
+                <li>
+                    <a href="./partial/index.html">Partial</a>
+                </li>
+                <li>
+                    <a href="./gallery/index.html">Gallery</a>
+                </li>
+                <li>
+                    <a href="./code/index.html">Code</a>
+                </li>
+            </ul>
+        </fieldset>
+
+    </section>
+
+    <section>
+
+        <fieldset>
+            <legend>Demo example JavaScript</legend>
+            <div id="cs-dialog-javascript"></div>
+        </fieldset>
+
+    </section>
+
+
+    <script type="text/javascript">
+        (function (d) {
+
+            /**
+             * Default config.
+             */
+            var dialog = new CsDialog({
+                debug: true, // enable debug mode to view console log messages
+                autoBind: true, // will automatically bind all the flo-dialog links on the page to their associated event handler
+                cache: true, // do not remove dialog from HTML, but use the already generated version
+                effect: {
+                    fade: true, // will make the dialog fade-in instead of appearing at once
+                    fall: false // will make the dialog 'fall out of the sky' when appearing
+                },
+                position: 'fixed' // will make the dialog move along with the screen
+            });
+            dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
+
+            /**
+             * Print demo config on page.
+             */
+            d.getElementById('cs-dialog-settings').innerHTML = '<pre>' + JSON.stringify(dialog.config, null, "\t") + '</pre>';
+            var demoJs = document.getElementsByTagName('script')[1].innerHTML;
+            d.getElementById('cs-dialog-javascript').innerHTML = '<pre>' + String(demoJs).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '</pre>';
+        })(document);
+    </script>
+
+</article>
+</body>
+</html>

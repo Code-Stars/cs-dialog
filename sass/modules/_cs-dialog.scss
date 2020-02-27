@@ -10,11 +10,45 @@
   &__title {
     padding-left: 24px;
     padding-right: 24px;
+    height: 40px;
+    line-height: 40px;
   }
 
   &__inner {
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 100%;
+  }
+
+  &__spinner {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    margin-top: -25px;
+  }
+
+  &__nav {
+    position: absolute;
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    margin-top: -25px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 50px;
+
+    &--next {
+      text-align: right;
+      right: 1rem;
+    }
+
+    &--previous {
+      text-align: left;
+      left: 1rem;
+    }
   }
 
   &__header {
@@ -27,7 +61,8 @@
     position: relative;
     background-color: #fff;
     line-height: normal;
-    padding: 24px;
+    min-height: 200px;
+    //padding: 24px;
 
     img {
       display: block;
@@ -53,6 +88,7 @@
     padding-left: 24px;
     padding-right: 24px;
     color: #000;
+    line-height: 40px;
   }
 
   &.hide {

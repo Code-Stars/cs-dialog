@@ -179,8 +179,12 @@ CsUtils.mergeOptions = function (obj1, obj2) {
  * @param {Element} container
  */
 CsUtils.runEmbeddedJs = function (container) {
-    var scripts = container.getElementsByTagName('script');
-    for (var i = 0; i < scripts.length; i++) {
-        eval(scripts[i].text);
+    if (typeof container !== 'undefined') {
+
+        var scripts = container.getElementsByTagName('script');
+
+        for (var i = 0; i < scripts.length; i++) {
+            eval(scripts[i].text);
+        }
     }
 };

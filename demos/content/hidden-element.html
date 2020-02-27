@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeStars Dialog Demos - Hidden element</title>
+    <link rel="stylesheet" href="../demos.css"/>
+    <link rel="stylesheet" href="../../dist/cs-dialog.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
+
+    <!-- dist -->
+    <script type="text/javascript" src="../../dist/cs-dialog.js"></script>
+
+    <!-- src -->
+    <!--<script type="text/javascript" src="../../src/cs-utils.js"></script>-->
+    <!--<script type="text/javascript" src="../../src/cs-dialog.js"></script>-->
+</head>
+<body>
+
+<article class="leader-inside">
+
+    <a href="../demos.html">&lt; Terug</a>
+
+    <section>
+
+        <header class="trailer">
+            <h3>Example 1 - Loading dialog with content from an hidden element</h3>
+        </header>
+
+        <div id="cs-dialog-demo-content" style="display: none;">
+            Dialog content from HTML element with ID 'cs-dialog-demo-content'.
+        </div>
+
+        <button data-cs-dialog="hidden-element" data-id="cs-dialog-demo-content" data-title="Demo Dialog"
+                data-type="hidden-element">
+            Open Demo Dialog from hidden element
+        </button>
+
+    </section>
+
+</article>
+</body>
+</html>

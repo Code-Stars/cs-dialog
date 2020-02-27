@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeStars Dialog Demos - Gallery</title>
+    <link rel="stylesheet" href="../demos.css"/>
+    <link rel="stylesheet" href="../../dist/cs-dialog.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
+
+    <!-- dist -->
+    <!--<script type="text/javascript" src="../../dist/cs-dialog.min.js"></script>-->
+
+    <!-- src -->
+    <script type="text/javascript" src="../../src/cs-utils.js"></script>
+    <script type="text/javascript" src="../../src/cs-dialog.js"></script>
+</head>
+<body>
+
+<article class="leader-inside">
+
+    <section>
+
+        <div><a href="../index.html">&lt; Terug</a></div>
+
+        <a data-cs-index="1" data-cs-dialog="gallery" data-cs-title="Dialog Demo - Content image"
+           data-cs-image-url="./example-slide-1.jpg"
+           href="javascript:;">
+            <figure>
+                <img class="thumb" src="example-slide-1.jpg" alt="Example image"/>
+            </figure>
+        </a>
+
+        <a data-cs-index="2" data-cs-dialog="gallery" data-cs-title="Dialog Demo - Content image"
+           data-cs-image-url="./example-slide-2.jpg"
+           href="javascript:;">
+            <figure>
+                <img class="thumb" src="example-slide-2.jpg" alt="Example image"/>
+            </figure>
+        </a>
+
+
+        <a data-cs-index="3" data-cs-dialog="gallery" data-cs-title="Dialog Demo - Content image"
+           data-cs-image-url="./example-slide-3.jpg"
+           href="javascript:;">
+            <figure>
+                <img class="thumb" src="example-slide-3.jpg" alt="Example image"/>
+            </figure>
+        </a>
+
+        <a data-cs-index="4" data-cs-dialog="gallery" data-cs-title="Dialog Demo - Content image"
+           data-cs-image-url="./example-slide-4.jpg"
+           href="javascript:;">
+            <figure>
+                <img class="thumb" src="example-slide-4.jpg" alt="Example image"/>
+            </figure>
+        </a>
+
+    </section>
+
+    <script>
+        (function () {
+            new CsDialog({
+                effect: {
+                    fade: true
+                }
+            });
+        })();
+    </script>
+
+</article>
+
+</body>
+</html>
