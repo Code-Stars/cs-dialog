@@ -13,18 +13,25 @@
 
 <article class="leader-inside">
 
-    <a href="../demos.html">&lt; Terug</a>
-
     <section>
+
+        <div class="trailer">
+            <a href="../index.html">&lt; Back</a>
+        </div>
 
         <header class="trailer">
             <h3>Example 3 - Loading dialog with content from a URL</h3>
         </header>
 
-        <button data-cs-dialog="partial" data-title="Demo Dialog" data-url="../demo-content-partial.html">
+        <button data-cs-dialog="partial" data-title="Demo Dialog" data-url="demo-content-partial.html">
             Open Demo Dialog from URL
         </button>
 
+        <script>
+            (function() {
+                new CsDialog();
+            })();
+        </script>
     </section>
 
 </article>

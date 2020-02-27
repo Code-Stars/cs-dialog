@@ -64,10 +64,13 @@
     background-color: #fff;
     line-height: normal;
     min-height: 200px;
-    //padding: 24px;
 
     img {
       display: block;
+    }
+
+    .cs-dialog--padding & {
+      padding: 24px;
     }
   }
 

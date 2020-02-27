@@ -2,53 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CodeStars Dialog Demos - String</title>
+    <title>CodeStars Dialog Demos - String content</title>
     <link rel="stylesheet" href="../demos.css"/>
-    <link rel="stylesheet" href="../../dist/cs-dialog.min.css"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
-    <script type="text/javascript" src="../../dist/cs-dialog.min.js"></script>
+    <link rel="stylesheet" href="../../dist/cs-dialog.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"/>
+
+    <!-- dist -->
+    <script type="text/javascript" src="../../dist/cs-dialog.js"></script>
+
+    <!-- src -->
+    <!--<script type="text/javascript" src="../../src/cs-utils.js"></script>-->
+    <!--<script type="text/javascript" src="../../src/cs-dialog.js"></script>-->
 </head>
 <body>
 
 <article class="leader-inside">
 
-    <a href="../demos.html">&lt; Terug</a>
-
     <section>
 
-        <header class="trailer">
-            <h3>Example 1 - Loading dialog with content from an hidden element</h3>
-        </header>
-
-        <div id="cs-dialog-demo-content" style="display: none;">
-            Dialog content from HTML element with ID 'cs-dialog-demo-content'.
+        <div class="trailer">
+            <a href="../index.html">&lt; Back</a>
         </div>
 
-        <button data-cs-dialog="hidden-element" data-id="cs-dialog-demo-content" data-title="Demo Dialog" data-type="hidden-element">
-            Open Demo Dialog from hidden element
+        <header class="trailer">
+            <h3>Example 1 - Loading dialog with string content</h3>
+        </header>
+
+        <button id="open-string-content">
+            Open Demo Dialog with string content
         </button>
 
     </section>
 
     <script type="text/javascript">
         (function () {
+            var dialog = new CsDialog( {
+                    effect: {
+                        fade: true
+                    }
+                } ),
+                button = document.getElementById( 'open-string-content' );
 
-            var dialog = new CsDialog({
-                debug: true, // enable debug mode to view console log messages
-                autoBind: true, // will automatically bind all the flo-dialog links on the page to their associated event handler
-                cache: true, // do not remove dialog from HTML, but use the already generated version
-                effect: {
-                    fade: true, // will make the dialog fade-in instead of appearing at once
-                    fall: false // will make the dialog 'fall out of the sky' when appearing
-                },
-                position: 'fixed' // will make the dialog move along with the screen
-            });
-
-            dialog.Dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
-
-            dialog.openWithContent('CsDialog with content', '<div><h3>This is the content.</h3></div>');
+            button.onclick = function () {
+                dialog.openWithContent( 'CsDialog with content title', '<div><h3>This is the content.</h3></div>' )
+            };
         })();
     </script>
+
+</article>
 
 </body>
 </html>

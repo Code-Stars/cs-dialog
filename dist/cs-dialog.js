@@ -18,6 +18,7 @@ var CsDialog = function (config) {
         debug: false,
         autoBind: true,
         cache: true,
+        padding: true,
         position: 'absolute',
         closeOnCloakClick: true,
         effect: {
@@ -117,6 +118,8 @@ CsDialog.prototype.imageHandler = function (target) {
         imageUrl: target.getAttribute('data-image-url')
     };
 
+    this.config.padding = false;
+
     if (attr.imageUrl !== null) {
         var image = document.createElement('img');
 
@@ -141,6 +144,9 @@ CsDialog.prototype.galleryHandler = function (target) {
         imageUrl: target.getAttribute('data-cs-image-url'),
         index: parseInt(target.getAttribute('data-cs-index'))
     };
+
+    // disable dialog padding
+    this.config.padding = false;
 
     if (attr.imageUrl !== null) {
         var image = document.createElement('img');
@@ -576,6 +582,10 @@ CsDialog.prototype.renderDialogHtml = function () {
 
     container.id = 'cs-dialog-' + this.id;
     container.className = 'cs-dialog extend hide';
+
+    if (this.config.padding) {
+        container.className += ' cs-dialog--padding';
+    }
 
     containerInner.className = 'cs-dialog__inner';
     container.appendChild(containerInner);

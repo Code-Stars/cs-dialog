@@ -51,6 +51,8 @@
     min-height: 200px; }
     .cs-dialog__body img {
       display: block; }
+    .cs-dialog--padding .cs-dialog__body {
+      padding: 24px; }
   .cs-dialog__img {
     width: 100%; }
   .cs-dialog__footer {

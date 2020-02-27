@@ -74,3 +74,11 @@ section {
     height: auto;
     margin: 10px;
 }
+
+.trailer {
+    margin-bottom: 1rem;
+}
+
+.trailer-x2 {
+    margin-bottom: 2rem;
+}
