@@ -375,12 +375,10 @@ CsDialog.prototype.updateActiveDialog = function () {
 		delay = 500;
 	}
 
-	return Promise.all(
-		[
-			this.showDialog(),
-			obj.appendTitle(obj.title),
-			obj.appendContent(obj.content, delay)
-		]
+	return Promise.all([
+		this.showDialog(),
+		obj.appendTitle(obj.title),
+		obj.appendContent(obj.content, delay)]
 	).then(function () {
 		return obj.activeDialog;
 	});
@@ -424,7 +422,6 @@ CsDialog.prototype.showDialog = function () {
 
 /**
  * Positions the dialog in the center of the screen.
- * Can be changed via the settings.
  */
 CsDialog.prototype.positionDialog = function () {
 
