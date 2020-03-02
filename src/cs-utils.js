@@ -114,8 +114,8 @@ CsUtils.get = function (url) {
 /**
  * Wait for element.
  *
- * @param element
- * @param callback
+ * @param {Element} element
+ * @param {function} callback
  */
 CsUtils.waitForElement = function (element, callback) {
 	var ticks = setInterval(function () {

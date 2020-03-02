@@ -5,7 +5,7 @@ const config = {
     js_path: './',
     css_path: './',
     sass_path: './sass/',
-    es6_path: './src/',
+    src_path: './src/',
     vendor_path: './vendor/',
     clean_app: true
 };
@@ -40,7 +40,7 @@ gulp.task('watch', function () {
     gulp.watch(config.sass_path + '**/*.scss', gulp.series('watch-sass'));
 
     // JS files
-    gulp.watch(config.es6_path + '**/**/*.js', gulp.series('watch-js'));
+    gulp.watch(config.src_path + '**/**/*.js', gulp.series('watch-js'));
 
     // HTML files
     gulp.watch('./**/*.html').on('change', function (files) {
@@ -74,8 +74,8 @@ gulp.task('build-custom-css', function () {
 gulp.task('watch-js', function () {
 
     return gulp.src([
-        config.es6_path + '/cs-dialog.js',
-        config.es6_path + '/cs-utils.js'
+        config.src_path + '/cs-dialog.js',
+        config.src_path + '/cs-utils.js'
     ])
         .pipe(concat('cs-dialog.js'))
         .pipe(gulp.dest(config.js_path + 'dist/'))

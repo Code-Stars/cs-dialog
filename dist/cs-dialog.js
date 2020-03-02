@@ -98,7 +98,7 @@ CsDialog.prototype.keyboardHandler = function () {
 /**
  * Handles the 'partial' type dialogs.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.partialHandler = function (target) {
 	var attributes = {
@@ -114,7 +114,7 @@ CsDialog.prototype.partialHandler = function (target) {
 /**
  * Handles the 'hidden element' type dialogs.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.hiddenElementHandler = function (target) {
 
@@ -138,7 +138,7 @@ CsDialog.prototype.hiddenElementHandler = function (target) {
  * Handles the 'image' type dialogs.
  * By loading its content from an image src path.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.imageHandler = function (target) {
 
@@ -164,7 +164,7 @@ CsDialog.prototype.imageHandler = function (target) {
  * Handles the 'gallery' type dialogs.
  * By loading its content from an image src path.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.galleryHandler = function (target) {
 
@@ -236,7 +236,7 @@ CsDialog.prototype.galleryHandler = function (target) {
  *
  * We only fade once to open dialog, not when switching image.
  *
- * @param event
+ * @param {object} event
  * @param {string=} direction
  */
 CsDialog.prototype.switchImageHandler = function (event, direction) {
@@ -250,7 +250,8 @@ CsDialog.prototype.switchImageHandler = function (event, direction) {
 		target = (event.currentTarget) ? event.currentTarget : event.srcElement;
 	} else {
 		// change image based on arrow keys
-		target = (direction === 'backwards') ? this.activeDialog.getElementsByClassName('cs-dialog__nav--previous')[0] : this.activeDialog.getElementsByClassName('cs-dialog__nav--next')[0];
+		var className = (direction === 'backwards') ? 'cs-dialog__nav--previous' : 'cs-dialog__nav--next';
+		target = this.activeDialog.getElementsByClassName(className)[0];
 	}
 
 	if (!target) {
@@ -276,9 +277,9 @@ CsDialog.prototype.switchImageHandler = function (event, direction) {
 /**
  * Loads content or URL into a dialog.
  *
- * @param title {string}
- * @param url {string}
- * @param callback {function=}
+ * @param {string} title
+ * @param {string} url
+ * @param {function=} callback
  */
 CsDialog.prototype.openUrl = function (title, url, callback) {
 	var self = this;
@@ -298,8 +299,8 @@ CsDialog.prototype.openUrl = function (title, url, callback) {
 /**
  * Open dialog.
  *
- * @param title {string}
- * @param callback {function=}
+ * @param {string} title
+ * @param {function=} callback
  */
 CsDialog.prototype.openDialog = function (title, callback) {
 
@@ -375,12 +376,10 @@ CsDialog.prototype.updateActiveDialog = function () {
 		delay = 500;
 	}
 
-	return Promise.all(
-		[
-			this.showDialog(),
-			obj.appendTitle(obj.title),
-			obj.appendContent(obj.content, delay)
-		]
+	return Promise.all([
+		this.showDialog(),
+		obj.appendTitle(obj.title),
+		obj.appendContent(obj.content, delay)]
 	).then(function () {
 		return obj.activeDialog;
 	});
@@ -424,7 +423,6 @@ CsDialog.prototype.showDialog = function () {
 
 /**
  * Positions the dialog in the center of the screen.
- * Can be changed via the settings.
  */
 CsDialog.prototype.positionDialog = function () {
 
@@ -539,8 +537,8 @@ CsDialog.prototype.appendTitle = function (title) {
 /**
  * Append content to existing dialog DOM element.
  *
- * @param content {string}
- * @param delay
+ * @param {string} content
+ * @param {number=} delay
  */
 CsDialog.prototype.appendContent = function (content, delay) {
 	delay = delay || 0;
@@ -674,7 +672,7 @@ CsDialog.prototype.renderDialogHtml = function () {
 /**
  * Set footer text.
  *
- * @param text {string}
+ * @param {string} text
  */
 CsDialog.prototype.setFooterText = function (text) {
 	this.footerText = text;
@@ -719,19 +717,19 @@ var CsUtils = {};
  * @returns {boolean}
  */
 CsUtils.isIe = function () {
-    return window.navigator.userAgent.indexOf("MSIE ") > 0
-        || !!navigator.userAgent.match(/Trident.*rv\:11\./);
+	return window.navigator.userAgent.indexOf('MSIE ') > 0
+		|| !!navigator.userAgent.match(/Trident.*rv\:11\./);
 };
 
 /**
  * Checks if the DOM is ready.
  *
- * @param callback {function}
+ * @param {function} callback
  */
 CsUtils.isDomReady = function (callback) {
-    /in/.test(document.readyState) ? setTimeout(function () {
-        CsUtils.isDomReady(callback);
-    }, 10) : callback()
+	/in/.test(document.readyState) ? setTimeout(function () {
+		CsUtils.isDomReady(callback);
+	}, 10) : callback();
 };
 
 /**
@@ -739,148 +737,148 @@ CsUtils.isDomReady = function (callback) {
  * as soon as the head tag is loaded.
  */
 CsUtils.loadPolyFills = function () {
-    if (typeof Promise === 'undefined' && document.getElementById('script-promise-polyfill') === null) {
+	if (typeof Promise === 'undefined' && document.getElementById('script-promise-polyfill') === null) {
 
-        CsUtils.waitForElement(document.getElementsByTagName('head')[0], function (head) {
-            var script = document.createElement("script");
+		CsUtils.waitForElement(document.getElementsByTagName('head')[0], function (head) {
+			var script = document.createElement('script');
 
-            script.type = 'text/javascript';
-            script.src = 'https://cdn.jsdelivr.net' +
-                '/npm/promise-polyfill@8/dist/polyfill.min.js';
-            script.id = 'script-promise-polyfill';
+			script.type = 'text/javascript';
+			script.src = 'https://cdn.jsdelivr.net' +
+				'/npm/promise-polyfill@8/dist/polyfill.min.js';
+			script.id = 'script-promise-polyfill';
 
-            head.insertBefore(script, head.firstChild);
-        });
-    }
+			head.insertBefore(script, head.firstChild);
+		});
+	}
 };
 
 /**
  * Wait for poly fill to load.
  *
- * @param callback {function}
+ * @param {function} callback
  */
 CsUtils.waitForPolyfillsToLoad = function (callback) {
-    if (typeof Promise === 'undefined') {
-        CsUtils.loadPolyFills();
-        console.info('Waiting for Promise polyfill to load...');
+	if (typeof Promise === 'undefined') {
+		CsUtils.loadPolyFills();
+		console.info('Waiting for Promise polyfill to load...');
 
-        setTimeout(function () {
-            CsUtils.waitForPolyfillsToLoad(callback);
-        }.bind(this), 50);
+		setTimeout(function () {
+			CsUtils.waitForPolyfillsToLoad(callback);
+		}.bind(this), 50);
 
-    } else {
-        callback();
-    }
+	} else {
+		callback();
+	}
 };
 
 /**
  * Add event.
  *
- * @param obj {object}
- * @param type {string}
- * @param fn {function}
+ * @param {object} obj
+ * @param {string} type
+ * @param {function} fn
  */
 CsUtils.addEvent = function (obj, type, fn) {
 
-    if (obj.attachEvent) {
-        obj['e' + type + fn] = fn;
-        obj[type + fn] = function () {
-            obj['e' + type + fn](window.event);
-        };
-        obj.attachEvent('on' + type, obj[type + fn]);
-    } else
-        obj.addEventListener(type, fn, false);
+	if (obj.attachEvent) {
+		obj['e' + type + fn] = fn;
+		obj[type + fn] = function () {
+			obj['e' + type + fn](window.event);
+		};
+		obj.attachEvent('on' + type, obj[type + fn]);
+	} else
+		obj.addEventListener(type, fn, false);
 };
 
 /**
  * Performs a GET HTTP-request.
  *
- * @param url {string}
+ * @param {string} url
  */
 CsUtils.get = function (url) {
 
-    var requestPromise = new Promise(function (resolve, reject) {
+	var requestPromise = new Promise(function (resolve, reject) {
 
-        var req = new XMLHttpRequest();
-        req.open('GET', url);
-        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		var req = new XMLHttpRequest();
+		req.open('GET', url);
+		req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-        req.onload = function () {
-            if (req.status === 200) {
-                resolve(req.response);
-            } else {
-                reject(Error(req.statusText));
-            }
-        };
+		req.onload = function () {
+			if (req.status === 200) {
+				resolve(req.response);
+			} else {
+				reject(Error(req.statusText));
+			}
+		};
 
-        req.send();
-    });
+		req.send();
+	});
 
-    return Promise.all([requestPromise]).then(function (results) {
-        return results[0];
-    });
+	return Promise.all([requestPromise]).then(function (results) {
+		return results[0];
+	});
 };
 
 /**
  * Wait for element.
  *
- * @param element
- * @param callback
+ * @param {Element} element
+ * @param {function} callback
  */
 CsUtils.waitForElement = function (element, callback) {
-    var ticks = setInterval(function () {
-        if (element) {
-            clearInterval(ticks);
-            callback(element);
-        }
-    }, 10);
+	var ticks = setInterval(function () {
+		if (element) {
+			clearInterval(ticks);
+			callback(element);
+		}
+	}, 10);
 };
 
 /**
  * Fade's an element in.
  *
- * @param el {Element}
- * @param callback {function}
+ * @param {Element} el
+ * @param {function} callback
  */
 CsUtils.fadeIn = function (el, callback) {
 
-    el.style.opacity = 0;
+	el.style.opacity = 0;
 
-    var tick = function () {
-        el.style.opacity = +el.style.opacity + 0.05;
+	var tick = function () {
+		el.style.opacity = +el.style.opacity + 0.05;
 
-        if (+el.style.opacity < 1) {
-            (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
-        } else {
-            if (typeof callback === 'function')
-                callback();
-        }
-    };
-    tick();
+		if (+el.style.opacity < 1) {
+			(window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+		} else {
+			if (typeof callback === 'function')
+				callback();
+		}
+	};
+	tick();
 };
 
 /**
  * Merge objects.
  *
- * @param obj1 {object}
- * @param obj2 {object}
+ * @param {object} obj1
+ * @param {object} obj2
  *
  * @returns {{}}
  */
 CsUtils.mergeOptions = function (obj1, obj2) {
-    var obj3 = {};
+	var obj3 = {};
 
-    for (var attrName in obj1) {
-        if (obj1.hasOwnProperty(attrName)) {
-            obj3[attrName] = obj1[attrName];
-        }
-    }
-    for (var attrName2 in obj2) {
-        if (obj2.hasOwnProperty(attrName2)) {
-            obj3[attrName2] = obj2[attrName2];
-        }
-    }
-    return obj3;
+	for (var attrName in obj1) {
+		if (obj1.hasOwnProperty(attrName)) {
+			obj3[attrName] = obj1[attrName];
+		}
+	}
+	for (var attrName2 in obj2) {
+		if (obj2.hasOwnProperty(attrName2)) {
+			obj3[attrName2] = obj2[attrName2];
+		}
+	}
+	return obj3;
 };
 
 /**
@@ -889,12 +887,12 @@ CsUtils.mergeOptions = function (obj1, obj2) {
  * @param {Element} container
  */
 CsUtils.runEmbeddedJs = function (container) {
-    if (typeof container !== 'undefined') {
+	if (typeof container !== 'undefined') {
 
-        var scripts = container.getElementsByTagName('script');
+		var scripts = container.getElementsByTagName('script');
 
-        for (var i = 0; i < scripts.length; i++) {
-            eval(scripts[i].text);
-        }
-    }
+		for (var i = 0; i < scripts.length; i++) {
+			eval(scripts[i].text);
+		}
+	}
 };
