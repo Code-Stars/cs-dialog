@@ -1,84 +1,88 @@
 * {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 h1, h2, h3 {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 h1 {
-    font-size: 32px;
-    margin-bottom: 24px;
+  font-size: 32px;
+  margin-bottom: 24px;
 }
 
 h3 {
-    font-size: 18px;
-    font-weight: lighter;
+  font-size: 18px;
+  font-weight: lighter;
 }
 
 html, body {
-    height: 100%;
-    font-family: Arial, sans-serif;
-    color: #222;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: #222;
 }
 
 a {
-    display: inline-block;
-    text-decoration: none;
+  display: inline-block;
+  text-decoration: none;
 }
 
 p {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 figure {
-    display: inline-block;
+  display: inline-block;
 }
 
 button {
-    display: block;
-    width: 250px;
-    height: 30px;
-    line-height: 30px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+  display: block;
+  width: 250px;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 fieldset {
-    padding: 5px;
+  padding: 5px;
 }
 
 fieldset span {
-    line-height: 25px;
+  line-height: 25px;
 }
 
 legend {
-    font-weight: bold;
+  font-weight: bold;
+}
+
+header h1 {
+  padding: 24px 24px 0 24px;
 }
 
 section {
-    padding: 24px;
+  padding: 24px;
 }
 
 .list {
 }
 
 .list li {
-    display: block;
-    width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .thumb {
-    width: 150px;
-    height: auto;
-    margin: 10px;
+  width: 150px;
+  height: auto;
+  margin: 10px;
 }
 
 .trailer {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .trailer-x2 {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }

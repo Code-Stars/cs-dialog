@@ -98,7 +98,7 @@ CsDialog.prototype.keyboardHandler = function () {
 /**
  * Handles the 'partial' type dialogs.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.partialHandler = function (target) {
 	var attributes = {
@@ -114,7 +114,7 @@ CsDialog.prototype.partialHandler = function (target) {
 /**
  * Handles the 'hidden element' type dialogs.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.hiddenElementHandler = function (target) {
 
@@ -138,7 +138,7 @@ CsDialog.prototype.hiddenElementHandler = function (target) {
  * Handles the 'image' type dialogs.
  * By loading its content from an image src path.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.imageHandler = function (target) {
 
@@ -164,7 +164,7 @@ CsDialog.prototype.imageHandler = function (target) {
  * Handles the 'gallery' type dialogs.
  * By loading its content from an image src path.
  *
- * @param target {object}
+ * @param {object} target
  */
 CsDialog.prototype.galleryHandler = function (target) {
 
@@ -236,7 +236,7 @@ CsDialog.prototype.galleryHandler = function (target) {
  *
  * We only fade once to open dialog, not when switching image.
  *
- * @param event
+ * @param {object} event
  * @param {string=} direction
  */
 CsDialog.prototype.switchImageHandler = function (event, direction) {
@@ -250,7 +250,8 @@ CsDialog.prototype.switchImageHandler = function (event, direction) {
 		target = (event.currentTarget) ? event.currentTarget : event.srcElement;
 	} else {
 		// change image based on arrow keys
-		target = (direction === 'backwards') ? this.activeDialog.getElementsByClassName('cs-dialog__nav--previous')[0] : this.activeDialog.getElementsByClassName('cs-dialog__nav--next')[0];
+		var className = (direction === 'backwards') ? 'cs-dialog__nav--previous' : 'cs-dialog__nav--next';
+		target = this.activeDialog.getElementsByClassName(className)[0];
 	}
 
 	if (!target) {
@@ -276,9 +277,9 @@ CsDialog.prototype.switchImageHandler = function (event, direction) {
 /**
  * Loads content or URL into a dialog.
  *
- * @param title {string}
- * @param url {string}
- * @param callback {function=}
+ * @param {string} title
+ * @param {string} url
+ * @param {function=} callback
  */
 CsDialog.prototype.openUrl = function (title, url, callback) {
 	var self = this;
@@ -298,8 +299,8 @@ CsDialog.prototype.openUrl = function (title, url, callback) {
 /**
  * Open dialog.
  *
- * @param title {string}
- * @param callback {function=}
+ * @param {string} title
+ * @param {function=} callback
  */
 CsDialog.prototype.openDialog = function (title, callback) {
 
@@ -536,8 +537,8 @@ CsDialog.prototype.appendTitle = function (title) {
 /**
  * Append content to existing dialog DOM element.
  *
- * @param content {string}
- * @param delay
+ * @param {string} content
+ * @param {number=} delay
  */
 CsDialog.prototype.appendContent = function (content, delay) {
 	delay = delay || 0;
@@ -671,7 +672,7 @@ CsDialog.prototype.renderDialogHtml = function () {
 /**
  * Set footer text.
  *
- * @param text {string}
+ * @param {string} text
  */
 CsDialog.prototype.setFooterText = function (text) {
 	this.footerText = text;

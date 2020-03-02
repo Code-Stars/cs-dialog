@@ -19,23 +19,14 @@
 
 <article class="leader-inside">
 
-    <section>
-
-        <div class="trailer">
-            <h1>CodeStars &quot;CsDialog&quot; - Live demos</h1>
-        </div>
-
-        <fieldset>
-            <legend>Default CsDialog settings</legend>
-            <div id="cs-dialog-settings"></div>
-        </fieldset>
-
-    </section>
+    <header>
+        <h1>CodeStars &quot;CsDialog&quot; - Live demos</h1>
+    </header>
 
     <section>
 
         <fieldset>
-            <legend>Examples</legend>
+            <legend>CsDialog Examples</legend>
             <ul class="list">
                 <li>
                     <a href="./content/hidden-element.html">Content hidden element</a>
@@ -63,39 +54,72 @@
     <section>
 
         <fieldset>
-            <legend>Demo example JavaScript</legend>
+            <legend>CsDialog Default Settings</legend>
+            <div id="cs-dialog-settings"></div>
+        </fieldset>
+
+    </section>
+
+    <section>
+
+        <fieldset>
+            <legend>CsDialog Settings Explained</legend>
             <div id="cs-dialog-javascript"></div>
         </fieldset>
 
     </section>
 
+    <script>
+		/**
+		 * Default config with explanation.
+		 */
+		var dialog = new CsDialog({
+			cache: true,       // <-- Enables the re-use of the generated dialog HTML.
+			cloak: true,       // <-- Enables the dark cloak around the dialog.
+			padding: true,     // <-- Enables a padding inside the dialog's content area.
+			keyboard: true,    // <-- Enables keyboard bindings for navigation and closing the dialog.
+			dialogLinks: true, // <-- Enables automatic binding for all the cs-dialog links on the page to their associated event handler.
+			position: 'fixed', // <-- Enables the dialog to move along with the screen.
+			effect: {
+				fade: true     // <-- Enable a fade-in effect instead of appearing at once.
+			}
+		});
 
-    <script type="text/javascript">
-        (function (d) {
+		/**
+		 * Set footer text.
+		 */
+		dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
+    </script>
+    <script>
+		(function (d) {
 
-            /**
-             * Default config.
-             */
-            var dialog = new CsDialog({
-                debug: true, // Enable debug mode to view console log messages.
-                autoBind: true, // Will automatically bind all the flo-dialog links on the page to their associated event handler.
-                cache: true, // Do not remove dialog from HTML, but use the already generated version.
-                padding: true, // Will make the dialog have a padding around it's content.
-                effect: {
-                    fade: true, // Will make the dialog fade-in instead of appearing at once.
-                    fall: false // Will make the dialog 'fall out of the sky' when appearing.
-                },
-                position: 'fixed' // Will make the dialog move along with the screen.
-            });
-            dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
+			/**
+			 * Default config with explanation.
+			 */
+			var dialog = new CsDialog({
+				cache: true,       // <-- Enables the re-use of the generated dialog HTML.
+				cloak: true,       // <-- Enables the dark cloak around the dialog.
+				padding: true,     // <-- Enables a padding inside the dialog's content area.
+				keyboard: true,    // <-- Enables keyboard bindings for navigation and closing the dialog.
+				dialogLinks: true, // <-- Enables automatic binding for all the cs-dialog links on the page to their associated event handler.
+				position: 'fixed', // <-- Enables the dialog to move along with the screen.
+				effect: {
+					fade: true     // <-- Enable a fade-in effect instead of appearing at once.
+				}
+			});
 
-            /**
-             * Print demo config on page.
-             */
-            d.getElementById('cs-dialog-settings').innerHTML = '<pre>' + JSON.stringify(dialog.config, null, "\t") + '</pre>';
-            var demoJs = document.getElementsByTagName('script')[1].innerHTML;
-            d.getElementById('cs-dialog-javascript').innerHTML = '<pre>' + String(demoJs).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '</pre>';
-        })(document);
+			/**
+			 * Set footer text.
+			 */
+			dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
+
+			/**
+			 * Print demo config on page.
+			 */
+			d.getElementById('cs-dialog-settings').innerHTML = '<pre>' + JSON.stringify(dialog.config, null, '\t') + '</pre>';
+			var demoJs = document.getElementsByTagName('script')[1].innerHTML;
+			d.getElementById('cs-dialog-javascript').innerHTML = '<pre>' + String(demoJs).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '</pre>';
+		})(document);
     </script>
 
 </article>
