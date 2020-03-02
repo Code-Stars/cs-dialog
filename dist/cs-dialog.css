@@ -54,7 +54,8 @@
     .cs-dialog--padding .cs-dialog__body {
       padding: 24px; }
   .cs-dialog__img {
-    width: 100%; }
+    width: 100%;
+    height: auto; }
   .cs-dialog__footer {
     text-align: center;
     background-color: #fff;

@@ -29,16 +29,21 @@
             <h3>Example 2 - Loading dialog with an image as the content.</h3>
         </header>
 
-        <a data-cs-dialog="image" data-title="Dialog Demo - Content image" data-image-url="demo-image-1.jpg"
+        <a data-cs-dialog="image" data-cs-title="Dialog Demo - Content image" data-cs-image-url="./demo-image-1.jpg"
            href="javascript:;">
             <figure>
-                <img style="width: 300px;" src="demo-image-1.jpg" alt="Demo image"/>
+                <img style="width: 300px;" src="./demo-image-1.jpg" alt="Demo image"/>
             </figure>
         </a>
 
         <script>
             (function() {
-                new CsDialog();
+                new CsDialog({
+                    cache: true,
+                    effect: {
+                        fade: true
+                    }
+                });
             })();
         </script>
     </section>
