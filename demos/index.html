@@ -55,24 +55,12 @@
 
         <fieldset>
             <legend>CsDialog Default Settings</legend>
-            <div id="cs-dialog-settings"></div>
-        </fieldset>
-
-    </section>
-
-    <section>
-
-        <fieldset>
-            <legend>CsDialog Settings Explained</legend>
             <div id="cs-dialog-javascript"></div>
         </fieldset>
 
     </section>
 
     <script>
-		/**
-		 * Default config with explanation.
-		 */
 		var dialog = new CsDialog({
 			cache: true,       // <-- Enables the re-use of the generated dialog HTML.
 			cloak: true,       // <-- Enables the dark cloak around the dialog.
@@ -85,38 +73,10 @@
 			}
 		});
 
-		/**
-		 * Set footer text.
-		 */
-		dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
+		dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.'); // <-- Enables text in dialogs footer.
     </script>
     <script>
 		(function (d) {
-
-			/**
-			 * Default config with explanation.
-			 */
-			var dialog = new CsDialog({
-				cache: true,       // <-- Enables the re-use of the generated dialog HTML.
-				cloak: true,       // <-- Enables the dark cloak around the dialog.
-				padding: true,     // <-- Enables a padding inside the dialog's content area.
-				keyboard: true,    // <-- Enables keyboard bindings for navigation and closing the dialog.
-				dialogLinks: true, // <-- Enables automatic binding for all the cs-dialog links on the page to their associated event handler.
-				position: 'fixed', // <-- Enables the dialog to move along with the screen.
-				effect: {
-					fade: true     // <-- Enable a fade-in effect instead of appearing at once.
-				}
-			});
-
-			/**
-			 * Set footer text.
-			 */
-			dialog.setFooterText('&copy; CsDialog ' + (new Date()).getFullYear() + ' demo. All rights reserved.');
-
-			/**
-			 * Print demo config on page.
-			 */
-			d.getElementById('cs-dialog-settings').innerHTML = '<pre>' + JSON.stringify(dialog.config, null, '\t') + '</pre>';
 			var demoJs = document.getElementsByTagName('script')[1].innerHTML;
 			d.getElementById('cs-dialog-javascript').innerHTML = '<pre>' + String(demoJs).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '</pre>';
 		})(document);
