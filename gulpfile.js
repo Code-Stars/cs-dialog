@@ -6,8 +6,7 @@ const config = {
     css_path: './',
     sass_path: './sass/',
     src_path: './src/',
-    vendor_path: './vendor/',
-    clean_app: true
+    vendor_path: './vendor/'
 };
 
 const gulp = require('gulp'),

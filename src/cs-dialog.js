@@ -201,7 +201,7 @@ CsDialog.prototype.galleryHandler = function (target) {
 				nextBtn.appendChild(nextIcon);
 
 				CsUtils.addEvent(nextBtn, 'click', function (event) {
-					this.switchImageHandler(event, 1);
+					this.switchImageHandler(event);
 				}.bind(this));
 
 				container.appendChild(nextBtn);
@@ -218,7 +218,7 @@ CsDialog.prototype.galleryHandler = function (target) {
 				prevBtn.appendChild(prevIcon);
 
 				CsUtils.addEvent(prevBtn, 'click', function (event) {
-					this.switchImageHandler(event, -1);
+					this.switchImageHandler(event);
 				}.bind(this));
 
 				container.appendChild(prevBtn);
